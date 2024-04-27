@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đặt phòng</title>
+    <style>
+    /* CSS tùy chỉnh */
+    .form-label span {
+      color: red;
+      margin-left: 2px;
+    }
+  </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="...">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <!-- Custom File's Link -->
+    <link rel="stylesheet" href="assets/css/homepage.css"/>
+    <link rel="stylesheet" href="assets/css/homepage-responsive-style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/customer.css"/>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+</head>
+
+<div data-bs-target=".navbar" data-bs-offset="100">
+<div id="toast"></div>
+<header th:replace="~{header :: header}"></header>
+
+<div class="wrapper">
+<div class="container shadow">
+    <div id="overlay" class="overlay"></div>
+    <h4 class="pt-5">Khách sạn 3HKT</h4>
+    <div class="row bg-light-subtle border mb-5 m-0 shadow">
+        <div class="p-3">
+            <p class="fw-bold">
+                Nhận phòng: <span class="fw-normal" th:text="${checkIn}+' Vào lúc: 14:00'"></span>
+            </p>
+            <p class="fw-bold">
+                Trả phòng: <span class="fw-normal" th:text="${checkOut} +' Trả phòng: 12:00'"></span>
+            </p>
+            <a class="text-decoration-none" th:href="@{/room/reversion}">
+                Bạn muốn thay đổi lịch trình?
+            </a>
+        </div>
+    </div>
+    <h4>Chi tiết đặt phòng</h4>
+    <div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+    </div>
+
+
+    <!--    <form id="bookingForm">-->
+    <input type="text" class="form-control" id="orderInfo" required hidden
+           value="Thanh toan dat phong ">
+    <div class="row bg-light-subtle border m-0 shadow"
+         th:each="cate : ${createBookingDTO.getRoomCategoriesList()}">
+
+        <div class="col p-3">
+            <p class="fw-bold">Loại phòng: <span class="fw-normal"
+                                                 th:text="${cate.getRoomCategoryName()}"></span></p>
+            <p class="text-danger m-0 fw-bold">ƯU ĐÃI ĐẶC BIỆT: </p>
+            <p class="">Bao gồm bữa sáng</p>
+            <th:block th:each="rcm : ${createBookingDTO.getRoomCategoryMap()}">
+                <th:block th:if="${rcm.getKey() == cate.getRoomCategoryId()}">
+                    <P class="fw-bold mb-0">Chi tiết:</P> <span class="fw-normal"><span
+                        th:text="${rcm.getValue()}"></span> phòng, <span
+                        th:text="${createBookingDTO.getDateInfoList().size()-1}"></span> đêm,
+									<span th:text="${cate.getNumberPerson()}"> </span> người </span>
+                </th:block>
+            </th:block>
+
+
+        </div>
+        <div class="col-2 p-3 align-content-between align-middle">
+            <p class="mb-0 fw-bold">Số lượng phòng</p>
+            <p class=" mb-3">
+                <th:block th:each="entry : ${createBookingDTO.getRoomCategoryMap()}">
+                    <th:block th:if="${entry.key == cate.roomCategoryId}">
+
+                        <th:block th:each="roomCount : ${entry.value}">
+                            <span th:value="${roomCount}" th:utext="${roomCount}"></span>
+
+                        </th:block>
+                    </th:block>
+                </th:block>
+                </th:block>
+            </p>
+            <p class="mb-0 fw-bold">Số lượng khách
+                <i class="bi bi-exclamation-circle-fill" data-bs-container="body" data-bs-toggle="popover"
+                   data-bs-placement="top"
+                   data-bs-content="Từ 0 đến 12 tuổi được miễn phí nếu sử dụng giường có sẵn."
+                   data-bs-trigger="hover"></i>
+            </p>
+
+            <p th:text="${cate.getNumberPerson()}"></p>
+        </div>
+
+        <div class="col p-3 text-end">
+            <th:block th:each="entry : ${createBookingDTO.getRoomCategoryMap()}">
+                <th:block th:if="${entry.getKey()== cate.getRoomCategoryId()}">
+                    <th:block
+                            th:if="${createBookingDTO.getTotalPriceByCategoryId().containsKey(entry.getKey())}">
+                        <p class="mb-0 fw-bold">Giá từng phòng
+                        </p>
+                        <span class="fw-normal text-black"
+                              th:text="${#numbers.formatDecimal(createBookingDTO.getTotalPriceByCategoryId().get(entry.getKey()), 0, 'COMMA', 0, 'POINT') + ' VND/'}">
+									</span>
+                        <span th:text="${createBookingDTO.getDateInfoList().size()-1}+' Đêm'">
+                                    </span>
+                        <p class="mb-0 mt-3 fw-bold">Chính sách giá
+                            <th:block th:each="roomPrice : ${createBookingDTO.getCategoryRoomPrice()}">
+                                <th:block th:if="${cate.getRoomCategoryId() == roomPrice.getRoomCategoryId()}">
+                                    <i class="bi bi-exclamation-circle-fill" data-bs-container="body"
+                                       data-bs-toggle="popover"
+                                       data-bs-placement="top"
+                                       th:attr="data-bs-content='Ngày thường: ' +  ${#numbers.formatDecimal(roomPrice.getPrice(), 0, 'COMMA', 0, 'POINT')} + ' VND' + ' Cuối tuần: ' + ${#numbers.formatDecimal(roomPrice.getPrice().multiply(1.5), 0, 'COMMA', 0, 'POINT')} + ' VND' + ' ; Ngày lễ: ' + ${#numbers.formatDecimal(roomPrice.getPrice().multiply(3), 0, 'COMMA', 0, 'POINT')} + ' VND'"
+                                       data-bs-trigger="hover"></i>
+                                </th:block>
+                            </th:block>
+                        </p>
+                    </th:block>
+                </th:block>
+            </th:block>
+
+        </div>
+
+        <div class="col p-3 text-end">
+            <th:block th:each="entry : ${createBookingDTO.getRoomCategoryMap()}">
+                <th:block th:if="${entry.getKey()== cate.getRoomCategoryId()}">
+                    <th:block
+                            th:if="${createBookingDTO.getTotalPriceByCategoryId().containsKey(entry.getKey())}">
+                        <p class="mb-0 fw-bold text-danger">Tổng giá phòng
+                        </p>
+                        <p class="fw-bold"
+                           th:text="${#numbers.formatDecimal(createBookingDTO.getTotalPriceByCategoryId().get(entry.getKey()).multiply(entry.getValue()), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                            2.400.000</p>
+
+                    </th:block>
+                </th:block>
+            </th:block>
+
+        </div>
+
+    </div>
+
+    <div class="row g-2">
+        <div class="col py-5 d-flex flex-column">
+            <h4>Chính sách của chúng tôi</h4>
+            <div class="bg-light-subtle border shadow p-2 flex-grow-1">
+                <p class="fw-bold p-3 m-0">Huỷ: <span class="fw-normal">Nếu hủy hoặc thay đổi trước ngày
+									nhận phòng, sẽ trừ 10% tổng hoá đơn phải thanh toán.</span>
+                </p>
+                <p class="fw-bold p-3 m-0">Thanh toán: <span class="fw-normal">Thanh toán toàn bộ hoặc đặt
+									cọc 50% giá trị tiền đặt phòng.</span>
+                </p>
+                <p class="fw-bold p-3 m-0">Bữa ăn: <span class="fw-normal">Bữa sáng đã bao gồm.</span></p>
+                <p class="fw-bold p-3 m-0">Nhận phòng: <span class="fw-normal">14:00.</span></p>
+                <p class="fw-bold p-3 m-0">Trả phòng: <span class="fw-normal">12:00.</span></p>
+                <p class="fw-bold p-3 m-0">Chính sách khác: <span class="fw-normal">Giá phòng 2 người lớn và
+									1 trẻ em dưới 12 tuổi. Trẻ em từ 12 tuổi trở lên tính như người lớn.</span>
+                </p>
+
+            </div>
+        </div>
+        <div class="col py-5 ps-5 d-flex flex-column">
+            <h4>Giá tiền</h4>
+
+
+            <div class="bg-light-subtle border shadow p-2 mb-3 text-end flex-grow-1">
+                <p class="fw-bold p-3 m-0">
+                    Tổng Giá phòng: <span id="" class="fw-normal text-end"
+                                          th:text="${#numbers.formatDecimal(createBookingDTO.totalPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+
+                </p>
+                <p class="fw-bold border-bottom p-3 m-0">Thuế (10%): <span id="taxAmount"
+                                                                           class="fw-normal text-end"
+                                                                           th:text="${#numbers.formatDecimal(createBookingDTO.totalPrice.multiply(0.1) , 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                </p>
+                <p class="fw-bold p-3 m-0">Tổng giá: <span id="totalPrice" class="fw-normal text-end"
+                                                           th:text="${#numbers.formatDecimal(createBookingDTO.totalPrice.multiply(1.1)  , 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+
+                </p>
+                <!--
+                '-->
+            </div>
+
+
+            <h4 class="">Thanh toán</h4>
+            <div class="bg-light-subtle border shadow d-flex flex-column flex-grow-1">
+                <div class="d-flex justify-content-end">
+                    <label class="form-check-label px-1" for="depositPayment">
+                        Đặt cọc trước
+                    </label>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="paymentType" id="depositPayment"
+                               value="deposit">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <label class="form-check-label px-1" for="fullPayment">
+                        Thanh toán hết
+                    </label>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="radio" name="paymentType" id="fullPayment"
+                               value="full" checked>
+                    </div>
+                </div>
+                <p class="fw-bold p-3 m-0 border-top text-end">
+                    Số tiền thanh toán: <span id="paymentAmount" class="fw-normal text-end"
+                                              th:text="${#numbers.formatDecimal(createBookingDTO.totalPrice.multiply(1.1), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                </p>
+            </div>
+            <!--            <input type="hidden" name="selectedPaymentType" id="selectedPaymentType" value="full">-->
+            <input type="hidden" name="selectedPaymentType" id="selectedPaymentType" value="full">
+
+        </div>
+
+        <div th:if="${session.accountDetail == null}">
+            <div id="createPopup" class="popup">
+                <div class="popup-content">
+                    <button id="closePopupBtn" class="close btn-close "></button>
+                    <!-- Nội dung "Thông tin khách hàng" ở đây -->
+                    <h4 class="fw-bold"> Thông tin khách hàng</h4>
+                    <!--                        <form class="row g-3 p-3" id="bookingForm1">-->
+
+                   <div class="col">
+                    <label for="inputName" class="form-label">Họ và tên<span>*</span></label>
+                    <input type="text" class="form-control" id="inputName">
+                    <div id="title-validation-name" class="text-danger"></div>
+                </div>
+                <div class="col">
+                    <label for="inputPhone" class="form-label">Điện thoại<span>*</span></label>
+                    <input type="text" class="form-control" id="inputPhone">
+                    <div id="title-validation-phone" class="text-danger"></div>
+                </div>
+                <div class="col">
+                    <label for="inputEmail" class="form-label">Email<span>*</span></label>
+                    <input type="email" class="form-control" id="inputEmail">
+                    <div id="title-validation-email" class="text-danger"></div>
+                </div>
+
+                <div class="col">
+                    <label for="inputAddress" class="form-label">Địa chỉ<span>*</span></label>
+                    <input type="text" class="form-control" id="inputAddress">
+                    <div id="title-validation-address" class="text-danger"></div>
+                </div>
+                    <div class="mb-2">
+                        <label for="exampleFormControlTextarea1" class="form-label">Ghi chú (nếu
+                            có)</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1"
+                                  rows="3"></textarea>
+                        <div id="title-validation-textarea" class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Vui lòng đọc kỹ các điều khoản và đánh dấu vào ô bên cạnh.
+                            </label>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <input id="confirmBooking" type="submit" class="btn btn-dark"
+                                   value="Xác nhận đặt phòng"></input>
+                        </div>
+                    </div>
+
+
+                    <!--                        </form>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-4" th:if="${createBookingDTO.getRoomCategoryMap() != null}">
+
+            <div class=" col pb-2 text-end">
+                <a class="main-btn" th:href="@{/room/reversion}">
+                    Trở lại
+                </a>
+            </div>
+            <th:block th:if="${session.accountDetail == null}">
+                <div class=" col pb-2 text-start"><input id="openPopupBtn" type="submit" class="main-btn"
+                                                         value="Tiếp tục"></input>
+
+                </div>
+            </th:block>
+            <th:block th:if="${session.accountDetail != null}">
+
+                <div class=" col pb-2 text-start"><input type="submit" id="confirmBooking1" class="main-btn"
+                                                         value="Tiếp tục"> </input>
+
+                </div>
+
+
+            </th:block>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Contact section -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog modal-xl modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body p-0">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-lg-4 bg-cover"
+											style="background-image: url(../assets/img/contact3.png); min-height: 300px;">
+										</div>
+										<div class="col-lg-8">
+											<form id="feedback-form" class="row p-lg-5 gy-4">
+												<div class="col-12">
+													<h3>Liên lạc với chúng tôi</h3>
+													<p>Để biết thêm chi tiết về khách sạn Hà Nội 3HKT, bao gồm
+														giá phòng, hội thảo, các ưu đãi nghỉ dưỡng và ẩm thực
+														hay góp ý với chúng tôi, quý khách vui lòng để lại
+														thông tin, đội ngũ nhân viên Kinh Doanh sẽ liên hệ với bạn
+														trong thời gian sớm nhất.</p>
+												</div>
+
+												<div class="col-12">
+													<label for="title" class="form-label">Tiêu đề</label>
+													<input type="text" class="form-control" id="title" maxlength="100"
+														name="title" placeholder="Tiêu đề">
+													<div id="title-validation-msg" class="text-danger"></div>
+												</div>
+												<div class="col-12">
+													<label for="email" class="form-label">Email</label>
+													<input type="email" class="form-control" id="email" name="email"
+														placeholder="name@example.com">
+													<div id="email-validation-msg" class="text-danger"></div>
+												</div>
+												<div class="col-12">
+													<label for="content" class="form-label"> Nội dung </label>
+													<textarea id="content" name="content" cols="30" rows="5"
+														class="form-control" minlength="10" maxlength="2000"
+														placeholder="Viết ở đây..."></textarea>
+													<div id="content-validation-msg" class="text-danger"></div>
+												</div>
+												<div class="col-lg-3">
+													<button type="button" id="submit-feedback"
+														class="btn btn-warning">Gửi yêu cầu
+													</button>
+												</div>
+
+												<div class="col-lg-3">
+													<button type="button" class="btn btn-warning"
+														data-bs-dismiss="modal">Hủy
+													</button>
+												</div>
+											</form>
+										</div>
+
+										<script>
+											// Sử dụng JavaScript để gửi yêu cầu POST khi nút "Gửi yêu cầu" được bấm
+											document.getElementById("submit-feedback").addEventListener("click", function () {
+												var title = document.getElementById("title").value;
+												var email = document.getElementById("email").value;
+												var content = document.getElementById("content").value;
+												//title validate
+												var titleValidationMsg = document.getElementById("title-validation-msg");
+
+												if (title.length == 0) {
+													titleValidationMsg.textContent = "Tiêu đề không được để trống";
+													return; // Prevent the form from being submitted
+												} else {
+													titleValidationMsg.textContent = ""; // Clear any previous error message
+												}
+												// email validate
+												var emailValidationMsg = document.getElementById("email-validation-msg");
+												var emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+												if (email.length == 0) {
+													emailValidationMsg.textContent = "Email không được để trống";
+													return; // Prevent the form from being submitted
+												} else if (!emailRegex.test(email)) {
+													emailValidationMsg.textContent = "Email phải có định dạng example@gmail.com.";
+													return; // Prevent the form from being submitted
+												} else {
+													emailValidationMsg.textContent = ""; // Clear any previous error message
+												}
+												//content validate
+												var contentValidationMsg = document.getElementById("content-validation-msg");
+
+												if (content.length < 10) {
+													contentValidationMsg.textContent = "Nội dung phải có ít nhất 10 ký tự.";
+													return; // Prevent the form from being submitted
+												} else if (content.length > 2000) {
+													contentValidationMsg.textContent = "Nội dung không được vượt quá 2000 ký tự.";
+													return; // Prevent the form from being submitted
+												} else {
+													contentValidationMsg.textContent = ""; // Clear any previous error message
+												}
+
+												var data = {
+													title: title,
+													email: email,
+													content: content
+												};
+
+												fetch("/feedback/save", {
+													method: "POST",
+													headers: {
+														"Content-Type": "application/json"
+													},
+													body: JSON.stringify(data)
+												})
+													.then(response => {
+														if (!response.ok) {
+															throw new Error(`HTTP error! Status: ${response.status}`);
+														}
+														return response.text();  // Use response.text() for plain text
+													})
+													.then(message => {
+														// Display the message from the server
+														alert(message);
+														window.location.reload();  // Optionally reload the page
+													})
+													.catch(error => {
+														// Handle errors here
+														console.error("Error:", error);
+														alert("Có lỗi xảy ra khi gửi feedback. Hãy thử lại.");
+													});
+											});
+
+										</script>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+<section th:replace="~{footer :: footer}"></section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script th:inline="javascript">
+    const checkUser = /*[[${checkUser}]]*/ null;
+    var isUserAuthenticated = /*[[${isUserAuthenticated}]]*/ false;
+</script>
+<script src="/assets/js/customer.js"></script>
+</body>
+<script src="/assets/js/main.js"></script>
+</html>

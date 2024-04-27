@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
+    <title>Chi tiết phòng</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <!-- Custom File's Link -->
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header-footer-style.css">
+    <link rel="stylesheet" href="/assets/css/detailRoomCustomer.css">
+    <link rel="stylesheet" href="/assets/css/homepage.css">
+
+
+</head>
+
+
+<body data-bs-target=".navbar" data-bs-offset="100">
+<!-- Navbar section -->
+<header th:replace="~{header :: header}">
+
+</header>
+
+<div class="site-blocks-cover overlay" style="background-image: url(/assets/img/rooms/backgroundRoom.webp);"
+     data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 text-center" data-aos="fade">
+                <h1 class="mb-4" th:text="${bookRoomByCategories.roomCategories.getRoomCategoryName()}"></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
+
+                        <div class="d-md-flex mt-5 mb-5 row">
+                            <ul class="list1 col">
+                                <b class="fs-5"><u>Tiện ích</u></b>
+                                <p th:each="roomF :${bookRoomByCategories.roomFurnitures}">
+                                    <li><span th:text="${roomF.getFurnitureName()}"></span></li>
+                                </p>
+                            </ul>
+                            <ul class="list2 ms-5 col">
+                                <b class="fs-5"><u>Dịch vụ</u></b>
+                                <p th:each="roomS :${bookRoomByCategories.services}">
+                                    <li><span th:text="${roomS.getServiceName}"></span></li>
+                                </p>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 sidebar ftco-animate pl-md-5">
+
+                <br>
+                <div class="sidebar-box ftco-animate border-start border-dark">
+
+                    <div class="block-21 mb-2">
+                        <h3>Giá từ</h3>
+                        <h2
+                                th:text="${#numbers.formatDecimal(bookRoomByCategories.getCategoryRoomPrice().getPrice(), 0, 'COMMA', 0, 'POINT' )+' VND'}">
+                        </h2>
+
+                        <p1>
+                            <a th:href="@{'/room/search?checkIn=' + ${session.defaultDate} + '&checkOut=' + ${session.defaultDate1} + '&numberOfPeople='}"
+                               class="main-btn mt-2">Đặt ngay</a>
+                        </p1>
+                    </div>
+
+                    <div class="block-21 mb-2 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url(/assets/img/rooms/bed.png);"></a>
+                        <div class="text">
+                            <h3 class="heading"><span
+                                    th:text="${bookRoomByCategories.getRooms().get(0).getBedSize()}">Giường
+										KingSize</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="block-21 mb-2 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url(/assets/img/rooms/people.png);"></a>
+                        <div class="text">
+                            <h3 class="heading"><span
+                                    th:text="${bookRoomByCategories.getRoomCategories().numberPerson}"></span>
+                                người</h3>
+                        </div>
+                    </div>
+                    <div class="block-21 mb-2 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url(/assets/img/rooms/area.png);"></a>
+                        <div class="text">
+                            <h3 class="heading"><span
+                                    th:text="${bookRoomByCategories.getRoomCategories().getSquare()+'m2'}"></span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="block-21 mb-2 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url(/assets/img/rooms/view.png);"></a>
+                        <div class="text">
+                            <h3 class="heading"><span
+                                    th:text="${bookRoomByCategories.getRooms().get(0).getViewCity()}">Hướng
+										thành phố</span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-box ftco-animate">
+                        <h3>Chính sách trẻ em</h3>
+                        <p>- Dưới 6 tuổi: miễn phí</p>
+                        <p>- Từ 12 tuổi trở lên: tính phí như người lớn</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr>
+        
+        <div class="row g-0 col-md-12" th:each="roomImage, iteration : ${bookRoomByCategories.getImages()}">
+            <th:block th:if="${iteration.index < 1}">
+
+                <div class="col-md-6 gallery-item">
+                    <img decoding="async" th:src="'/assets/img/rooms/' + ${roomImage.getRoomImage1()}"
+                         class="img-fluid w-100 room-image" alt="Lỗi hiển thị ảnh">
+                    <div class="gallery-item-content"></div>
+                </div>
+                <div class="col-md-6 gallery-item">
+                    <img decoding="async" th:src="'/assets/img/rooms/' + ${roomImage.getRoomImage2()}"
+                         alt="Lỗi hiển thị ảnh"
+                         class="img-fluid w-100 room-image">
+                    <div class="gallery-item-content"></div>
+                </div>
+                <div class="col-md-6 gallery-item">
+                    <img decoding="async" th:src="'/assets/img/rooms/' + ${roomImage.getRoomImage3()}"
+                         alt="Lỗi hiển thị ảnh"
+                         class="img-fluid w-100 room-image">
+                    <div class="gallery-item-content"></div>
+                </div>
+                <div class="col-md-6 gallery-item">
+                    <img decoding="async" th:src="'/assets/img/rooms/' + ${roomImage.getRoomImage4()}"
+                         alt="Lỗi hiển thị ảnh"
+                         class="img-fluid w-100 room-image">
+                    <div class="gallery-item-content"></div>
+                </div>
+            </th:block>
+
+        </div>
+              
+        <hr>
+
+        <div class="col-sm-12 section-title text-center mb-5">
+            <h6>Chúng tôi có thể giúp gì cho bạn?</h6>
+            <h3>Những loại phòng khác của chúng tôi</h3>
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-4 mb-4 mb-lg-0" th:each="category, iteration : ${distinctCategories}">
+                <div class="room-item" th:if="${iteration.index < 3}">
+                    <img decoding="async" th:src="@{'/assets/img/rooms/' + ${category.image}}" class="img-fluid">
+                    <div class="room-item-wrap">
+                        <div class="room-content">
+                            <h5 class="text-white mb-lg-5 text-decoration-underline"
+                                th:text="${category.roomCategoryName}"></h5>
+                            <p class="text-white" th:text="${category.description}"></p>
+                            <p class="text-white fw-bold mt-lg-4"
+                               th:text="${#numbers.formatDecimal(bookRoomByCategories.getCategoryRoomPrice().getPrice(), 0, 'COMMA', 0, 'POINT' )+' VND'}">
+                            </p>
+                            <a class=" main-btn border-white text-white mt-lg-5"
+                               th:href="@{'/room/category/'+${category.roomCategoryId}}">Xem ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact section -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4 bg-cover"
+                             style="background-image: url(../assets/img/contact3.png); min-height: 300px;">
+                        </div>
+                        <div class="col-lg-8">
+                            <form id="feedback-form" class="row p-lg-5 gy-4">
+                                <div class="col-12">
+                                    <h3>Liên lạc với chúng tôi</h3>
+                                    <p>Để biết thêm chi tiết về khách sạn Hà Nội 3HKT, bao gồm
+                                        giá phòng, hội thảo, các ưu đãi nghỉ dưỡng và ẩm thực
+                                        hay góp ý với chúng tôi, quý khách vui lòng để lại
+                                        thông tin, đội ngũ nhân viên Kinh Doanh sẽ liên hệ với bạn
+                                        trong thời gian sớm nhất.</p>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="title" class="form-label">Tiêu đề</label>
+                                    <input type="text" class="form-control" id="title" maxlength="100"
+                                           name="title" placeholder="Tiêu đề">
+                                    <div id="title-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="name@example.com">
+                                    <div id="email-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="content" class="form-label"> Nội dung </label>
+                                    <textarea id="content" name="content" cols="30" rows="5"
+                                              class="form-control" minlength="10" maxlength="2000"
+                                              placeholder="Viết ở đây..."></textarea>
+                                    <div id="content-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" id="submit-feedback"
+                                            class="btn btn-warning">Gửi yêu cầu
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-warning"
+                                            data-bs-dismiss="modal">Hủy
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <script>
+                            // Sử dụng JavaScript để gửi yêu cầu POST khi nút "Gửi yêu cầu" được bấm
+                            document.getElementById("submit-feedback").addEventListener("click", function () {
+                                var title = document.getElementById("title").value;
+                                var email = document.getElementById("email").value;
+                                var content = document.getElementById("content").value;
+                                //title validate
+                                var titleValidationMsg = document.getElementById("title-validation-msg");
+
+                                if (title.length == 0) {
+                                    titleValidationMsg.textContent = "Tiêu đề không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    titleValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                // email validate
+                                var emailValidationMsg = document.getElementById("email-validation-msg");
+                                var emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+                                if (email.length == 0) {
+                                    emailValidationMsg.textContent = "Email không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else if (!emailRegex.test(email)) {
+                                    emailValidationMsg.textContent = "Email phải có định dạng example@gmail.com.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    emailValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                //content validate
+                                var contentValidationMsg = document.getElementById("content-validation-msg");
+
+                                if (content.length < 10) {
+                                    contentValidationMsg.textContent = "Nội dung phải có ít nhất 10 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else if (content.length > 2000) {
+                                    contentValidationMsg.textContent = "Nội dung không được vượt quá 2000 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    contentValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+
+                                var data = {
+                                    title: title,
+                                    email: email,
+                                    content: content
+                                };
+
+                                fetch("/feedback/save", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(data)
+                                })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! Status: ${response.status}`);
+                                        }
+                                        return response.text();  // Use response.text() for plain text
+                                    })
+                                    .then(message => {
+                                        // Display the message from the server
+                                        alert(message);
+                                        window.location.reload();  // Optionally reload the page
+                                    })
+                                    .catch(error => {
+                                        // Handle errors here
+                                        console.error("Error:", error);
+                                        alert("Có lỗi xảy ra khi gửi feedback. Hãy thử lại.");
+                                    });
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section th:replace="~{footer :: footer}"></section>
+
+<!-- Bootstrap 5 JS CDN Links -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Custom Js Link -->
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/aos.js"></script>
+
+</body>

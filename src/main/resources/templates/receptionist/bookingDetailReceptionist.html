@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lễ tân</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <!-- Include Bootstrap-datepicker CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <!-- Include Bootstrap-datepicker JS -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Include Bootstrap-datepicker localization for Vietnamese -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
+
+    <style>
+        /* Override Bootstrap styles for the active class */
+        .list-unstyled li.active {
+            background-color: #007bff !important;
+            color: #ffffff !important;
+            /* Add any other styles as needed */
+        }
+
+    </style>
+</head>
+
+<body>
+
+<body data-bs-target=".navbar" data-bs-offset="100"></body>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+        <ul class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-2"></i>Lễ tân</p>
+            <li th:class="${activePage == '/receptionist/createRoomReceptionist' ? 'active' : ''}">
+                <a th:href="@{/receptionist/createRoomReceptionist}"><i class="fa-solid fa-check-double pe-2"></i>Đặt
+                    phòng</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listRoomInUse' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listRoomInUse}"><i class="fa-solid fa-house-user pe-2"></i>Phòng đang sử
+                    dụng</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listBookingReceptionist' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listBookingReceptionist}"><i class="fa-solid fa-bell pe-2"></i>Đặt trước</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listHistoryBooking' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listHistoryBooking}"><i class="fa-solid fa-clipboard pe-2"></i>Lịch sử đặt
+                    phòng</a>
+            </li>
+        </ul>
+
+
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul style="list-style-type: none;">
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a></li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container shadow">
+            <h4 class="pt-5">Thông tin cơ bản</h4>
+
+            <input name="hotelBookingId" type="hidden"
+                   th:value="${bookingDetailsDTO.getHotelBooking().getHotelBookingId()}">
+
+            <div class="row bg-light-subtle border mb-5 m-0 shadow">
+                <div class="p-3">
+                    <p class="fw-bold">
+                        Mã đặt phòng: <span class="fw-normal"
+                                            th:text="${bookingDetailsDTO.getHotelBooking().getHotelBookingId()}"></span>
+                    </p>
+
+                    <p class="fw-bold">
+                        Nhận phòng:
+                        <span class="fw-normal"
+                              th:text="${bookingDetailsDTO.getCheckIn()}"></span>
+                    </p>
+
+
+                    <p class="fw-bold">
+                        Trả phòng: <span class="fw-normal"
+                                         th:text="${bookingDetailsDTO.getCheckOut()}"></span>
+
+                    </p>
+                </div>
+            </div>
+            <h4>Chi tiết đặt phòng</h4>
+            <div class="row bg-light-subtle border m-0 shadow"
+                 th:each="room, iteration : ${bookingDetailsDTO.getBookingRoomDetails()}">
+                <div class="col-6 p-3">
+                    <p class="fw-bold">Loại phòng: <span class="fw-normal"
+                                                         th:text="${room.getRoomCategories().getRoomCategoryName()}">Phòng đơn</span>
+                    </p>
+                    <p class="text-danger m-0 fw-bold">ƯU ĐÃI ĐẶC BIỆT: </p>
+                    <p class="">Bao gồm bữa sáng</p>
+                    <th:block th:each="r : ${bookingDetailsDTO.getGroupedRooms()}">
+                        <th:block th:if="${r.getKey() == room.getRoomCategories().getRoomCategoryId()}">
+                            <P class="fw-bold mb-0">Chi tiết:</P> <span class="fw-normal"><span
+                                th:text="${r.getValue().size()}"></span> phòng,<span
+                                th:text="${bookingDetailsDTO.getDateInfoList().size()-1}"></span> đêm,
+									<span th:text="${room.getRoomCategories().getNumberPerson()}"> </span> người </span>
+                        </th:block>
+                    </th:block>
+                </div>
+                <div class="col-2 p-3 align-content-between align-middle">
+                    <p class="mb-0">Số lượng phòng</p>
+
+                    <th:block th:each="r : ${bookingDetailsDTO.getGroupedRooms()}">
+                        <th:block th:if="${r.getKey() == room.getRoomCategories().getRoomCategoryId()}">
+								<span class="mb-3" aria-label="Select example" th:text="${r.getValue().size()}">
+
+								</span>
+                        </th:block>
+                    </th:block>
+
+                    <p class="mb-0">Số lượng khách
+                        <i class="bi bi-exclamation-circle-fill" data-bs-container="body" data-bs-toggle="popover"
+                           data-bs-placement="top"
+                           data-bs-content="Từ 2 đến 12 tuổi được miễn phí nếu sử dụng giường có sẵn."
+                           data-bs-trigger="hover"></i>
+                    </p>
+                    <span class="" aria-label="Default select example" disabled
+                          th:text="${room.getRoomCategories().getNumberPerson()}">
+						</span>
+                </div>
+                <th:block th:each="gr : ${bookingDetailsDTO.getGroupedRooms()}">
+                    <th:block th:if="${gr.getKey() == room.getRoomCategories().getRoomCategoryId()}">
+                        <th:block th:if="${bookingDetailsDTO.getTotalPriceByCategoryId().containsKey(gr.getKey())}">
+                            <div class="col p-3 text-end">
+                                <p class="fw-bold">Giá từng phòng: <span class="fw-normal"
+                                                                         th:text="${#numbers.formatDecimal(bookingDetailsDTO.getTotalPriceByCategoryId().get(gr.getKey()), 0, 'COMMA', 0, 'POINT') + ' VND/'}">1.200.000
+										</span> <span th:text="${bookingDetailsDTO.getDateInfoList().size()-1}+' Đêm'">
+
+										</span>
+                                </p>
+                                <p class="fw-bold">Tổng giá phòng: <span class="fw-normal"
+                                                                         th:text="${#numbers.formatDecimal(bookingDetailsDTO.getTotalPriceByCategoryId().get(gr.getKey()).multiply(gr.getValue().size()), 0, 'COMMA', 0, 'POINT') + ' VND'}">2.400.000</span>
+                                </p>
+                                <p>Chính sách đặt phòng
+                                    <i class="bi bi-exclamation-circle-fill" data-bs-container="body"
+                                       data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true"
+                                       data-bs-content="Hủy: Nếu hủy hoặc thay đổi trước ngày nhận phòng, sẽ trừ 10% tổng hoá đơn phải thanh toán.
+
+          <br><br>Thanh toán: Thanh toán toàn bộ hoặc đặt cọc 50% giá trị tiền đặt phòng..
+          
+          <br><br>Bữa ăn bao gồm: Bữa sáng đã bao gồm
+          
+          <br><br>Nhận phòng: 14:00
+          
+          <br><br>Trả phòng: 12:00
+          
+          <br><br>Chính sách khác: Giá phòng 2 người lớn và 1 trẻ em dưới 12 tuổi. Trẻ em từ 12 tuổi trở lên tính như người lớn."
+                                       data-bs-trigger="hover"></i>
+                                </p>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </th:block>
+            </div>
+
+
+            <div class="row g-2">
+                <div class="col py-5 d-flex flex-column">
+                    <h4>Khách hàng</h4>
+                    <div class="bg-light-subtle border shadow p-2 flex-grow-1">
+                        <th:block th:if="${bookingDetailsDTO.getUser()!=null}">
+                            <p class="fw-bold ">
+                                Tên khách hàng: <span class="fw-normal"
+                                                      th:text="${viewCheckInDTO.getName()}">Nguyen Ngoc Khoa</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Số điện thoại: <span class="fw-normal"
+                                                     th:text="${viewCheckInDTO.getPhone()}"> 0354789654</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Email: <span class="fw-normal" th:text="${viewCheckInDTO.getEmail()}">khoann153156@fpt.edu.vn</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Địa chỉ: <span class="fw-normal" th:text="${viewCheckInDTO.getAddress()}">Thach Hoa, Thach That, Ha Noi</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Phương thức đặt: <span class="fw-normal"
+                                                       th:text="${bookingDetailsDTO.getPaymentType().getPaymentName()}">Trực tuyến</span>
+                            </p>
+                        </th:block>
+
+
+                        <th:block th:if="${bookingDetailsDTO.getUser()==null}">
+                            <p class="fw-bold ">
+                                Tên khách hàng: <span class="fw-normal"
+                                                      th:text="${viewCheckInDTO.getName()}">Nguyen Ngoc Khoa</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Số điện thoại: <span class="fw-normal"
+                                                     th:text="${viewCheckInDTO.getPhone()}"> 0354789654</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Email: <span class="fw-normal"
+                                             th:text="${viewCheckInDTO.getEmail()}">khoann153156@fpt.edu.vn</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Địa chỉ: <span class="fw-normal"
+                                               th:text="${viewCheckInDTO.getAddress()}">Thach Hoa, Thach That, Ha Noi</span>
+                            </p>
+                            <p class="fw-bold ">
+                                Phương thức đặt: <span class="fw-normal"
+                                                       th:text="${bookingDetailsDTO.getPaymentType().getPaymentName()}">Trực tuyến</span>
+                            </p>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="col py-5 ps-5 d-flex flex-column">
+                    <h4>Thông tin thanh toán</h4>
+                    <div class="bg-light-subtle border shadow p-2 text-end flex-grow-1">
+                        <p class="fw-bold p-3 m-0">Tổng tiền phòng: <span class="fw-normal text-end"
+                                                                          th:text="${#numbers.formatDecimal(bookingDetailsDTO.getRoomPrice(),0, 'COMMA', 0, 'POINT') + ' VND'}">3.960.000</span>
+                        </p>
+                        <p class="fw-bold p-3 m-0">Thuế(10%): <span class="fw-normal text-end"
+                                                                    th:text="${#numbers.formatDecimal(bookingDetailsDTO.getRoomPrice().multiply(0.1),0, 'COMMA', 0, 'POINT') + ' VND'}">3.960.000</span>
+                        </p>
+                        <th:block th:each="items : ${bookingDetailsDTO.getTransactionsList()}">
+                            <th:block th:if="${items.getTransactionsTypeId() == 1}">
+                                <p class="fw-bold border-bottom p-3 m-0">Số tiền đã thanh toán: <span id="taxAmount"
+                                                                                                      class="fw-normal text-end"
+                                                                                                      th:text="${#numbers.formatDecimal(items.getAmount(), 0, 'COMMA', 0, 'POINT') + ' VND'}">360.000</span>
+                                </p>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${bookingDetailsDTO.getCustomerCancellation() != null}">
+                            <th:block
+                                    th:if="${bookingDetailsDTO.getHotelBooking().getHotelBookingId() == bookingDetailsDTO.getCustomerCancellation().getHotelBookingId()}">
+                                <p class="fw-bold border-bottom p-3 m-0">
+                                    Số tiền được hoàn khi huỷ phòng:
+                                    <span class="fw-normal text-end" th:utext="${bookingDetailsDTO.getCustomerCancellation().getRefundAmount() != null ?
+                                                        #numbers.formatDecimal(bookingDetailsDTO.getCustomerCancellation().getRefundAmount(), 0, 'COMMA', 0, 'POINT') + ' VND' :
+                                                        'Đang chờ xét duyệt'}">
+            </span>
+                                </p>
+                            </th:block>
+                        </th:block>
+
+
+                        <th:block th:if="${bookingDetailsDTO.getHotelBooking().getStatusId()==3}">
+
+
+                            <th:block th:each="items : ${bookingDetailsDTO.getTransactionsList()}">
+                                <th:block th:if="${items.getTransactionsTypeId() == 3}">
+                                    <p class="fw-bold border-bottom p-3 m-0">Số tiền được hoàn: <span
+                                            class="fw-normal text-end"
+                                            th:text="${#numbers.formatDecimal(items.getAmount(), 0, 'COMMA', 0, 'POINT') + ' VND'}">360.000</span>
+                                    </p>
+                                </th:block>
+
+                            </th:block>
+
+                        </th:block>
+
+                        <th:block th:if="${bookingDetailsDTO.getHotelBooking().getStatusId()==3}">
+
+
+                            <p class="fw-bold p-3 m-0">
+                                Dịch vụ:
+                                <span class="fw-normal text-end"
+                                      id="totalPriceSum1"></span>
+                            <p class="fw-bold  border-bottom m-0">
+                                <a class="fw-normal" href="#" id="viewServiceDetails" style="display: none;">(Bấm để xem
+                                    chi tiết)</a>
+                            </p>
+                            </p>
+
+
+                            <p class="fw-bold p-3 m-0">Tổng hoá đơn: <span class="fw-normal text-end"
+                                                                           th:text="${#numbers.formatDecimal(bookingDetailsDTO.getHotelBooking().getTotalPrice(),0, 'COMMA', 0, 'POINT') + ' VND'}">3.960.000</span>
+                            </p>
+
+                        </th:block>
+
+
+                    </div>
+                </div>
+                <div class="row mb-3">
+
+                    <div class=" col text-center"><a th:href="@{/receptionist/listHistoryBooking}"
+                                                     class="btn btn-dark ">Quay
+                        lại</a></div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<div id="servicePopup" class="popup">
+    <div class="">
+        <button id="closeServicePopupBtn" class="close btn-close "></button>
+        <h4> Thông tin dịch vụ</h4>
+        <div class="">
+            <table class="table table-striped table-bordered table-hover border shadow">
+                <thead class="table-dark" id="thead">
+                <tr>
+                    <th>Tên dịch vụ</th>
+                    <th>Đơn giá(VND)</th>
+                    <th>Số lượng</th>
+                    <th>Tổng giá(VND)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="items : ${bookingDetailsDTO.getHotelBookingServiceList()}">
+                    <th:block th:each="its : ${bookingDetailsDTO.getRoomServiceList()}">
+                        <th:block th:if="${items.getServiceId() == its.getServiceId()}">
+                            <td th:text="${its.getServiceName()}">Dịch vụ Aaaaaaaaaaaaaa</td>
+                            <td th:text="${#numbers.formatDecimal(its.getServicePrice(), 0, 'COMMA', 0, 'POINT')}">
+                                Dịch vụ Aaaaaaaaaaaaaa
+                            </td>
+                        </th:block>
+                    </th:block>
+                    <td th:text="${items.getQuantity()}"> 2</td>
+                    <td th:text="${#numbers.formatDecimal(items.getTotalPrice(), 0, 'COMMA', 0, 'POINT') }">
+                        200,000 VND
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3" align="right" class="fw-bold">Thuế(10%):</td>
+                    <td id="taxTotalPriceSum" class="fw-bold">
+                </tr>
+                <tr>
+                    <td colspan="3" align="right" class="fw-bold">Tổng cộng:</td>
+                    <td id="totalPriceSum" class="fw-bold">
+                    </td>
+                </tr>
+                </tfoot>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function () {
+        var totalPriceSumElement = document.getElementById('totalPriceSum');
+        var totalPriceSumElement1 = document.getElementById('totalPriceSum1');
+        var viewServiceDetailsLink = document.getElementById('viewServiceDetails');
+        var taxTotalPriceSum = document.getElementById('taxTotalPriceSum');
+        var items =/*[[${bookingDetailsDTO.getHotelBookingServiceList()}]]*/ '';
+
+        var sum = items.reduce(function (acc, item) {
+            return acc + item.totalPrice;
+        }, 0);
+
+        // Calculate the percentage increase (10% in this case)
+        var percentageIncrease = 0.1;
+        var increasedAmount = sum * percentageIncrease;
+        var totalAmountWithIncrease = sum + increasedAmount;
+
+        totalPriceSumElement.textContent = formatCurrency(totalAmountWithIncrease);
+        totalPriceSumElement1.textContent = formatCurrency(totalAmountWithIncrease);
+        taxTotalPriceSum.textContent = formatCurrency(increasedAmount);
+
+        // Show or hide the link based on the total price
+        if (totalAmountWithIncrease > 0) {
+            viewServiceDetailsLink.style.display = 'inline'; // Display the link
+        } else {
+            viewServiceDetailsLink.style.display = 'none'; // Hide the link
+        }
+
+        // Display the percentage increase
+        percentageIncreaseElement.textContent = '(' + (percentageIncrease * 100) + '% Increase)';
+    });
+
+    function formatCurrency(number) {
+        if (isNaN(number)) {
+            return 'Invalid number';
+        }
+        const parts = number.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const formattedNumber = parts.join('.') + ' VND';
+        return formattedNumber;
+    }
+
+    /*]]>*/
+</script>
+
+
+</body>
+
+</html>

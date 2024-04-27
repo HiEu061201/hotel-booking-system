@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lễ tân</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+		crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+	<script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/assets/css/manager.css" />
+	<link rel="stylesheet" href="/assets/css/sidebar.css">
+	<script src="/assets/js/sidebar.js"></script>
+	<script src="/assets/js/manager.js"></script>
+	<link rel="stylesheet" href="/assets/css/header-footer.css">
+	<link rel="stylesheet" href="/assets/css/header_footer_style.css">
+	<link rel="stylesheet" href="/assets/css/toast.css">
+	<script src="/assets/js/toast.js"></script>
+	<!-- Include Bootstrap-datepicker CSS -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+	<!-- Include Bootstrap-datepicker JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+	<!-- Include Bootstrap-datepicker localization for Vietnamese -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
+
+	<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+	<style>
+		.tooltip-arrow,
+		.red-tooltip+.tooltip>.tooltip-inner {
+			background-color: #f00;
+
+			background-color: white;
+			color: black;
+		}
+
+		/* Override Bootstrap styles for the active class */
+		.list-unstyled li.active {
+			background-color: #007bff !important;
+			color: #ffffff !important;
+			/* Add any other styles as needed */
+		}
+	</style>
+</head>
+
+<body>
+	<div id="toast"></div>
+
+	<body data-bs-target=".navbar" data-bs-offset="100"></body>
+	<div class="wrapper">
+		<!-- Sidebar Holder -->
+		<nav id="sidebar">
+			<div class="sidebar-header border-bottom">
+				<img src="/assets/img/Orilogo.png" class="img-fluid">
+			</div>
+
+			<ul class="list-unstyled components border-bottom">
+				<p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-2"></i>Lễ tân</p>
+				<li th:class="${activePage == '/receptionist/createRoomReceptionist' ? 'active' : ''}">
+					<a th:href="@{/receptionist/createRoomReceptionist}"><i
+							class="fa-solid fa-check-double pe-2"></i>Đặt
+						phòng</a>
+				</li>
+				<li th:class="${activePage == '/receptionist/listRoomInUse' ? 'active' : ''}">
+					<a th:href="@{/receptionist/listRoomInUse}"><i class="fa-solid fa-house-user pe-2"></i>Phòng đang sử
+						dụng</a>
+				</li>
+				<li th:class="${activePage == '/receptionist/listBookingReceptionist' ? 'active' : ''}">
+					<a th:href="@{/receptionist/listBookingReceptionist}"><i class="fa-solid fa-bell pe-2"></i>Đặt
+						trước</a>
+				</li>
+				<li th:class="${activePage == '/receptionist/listHistoryBooking' ? 'active' : ''}">
+					<a th:href="@{/receptionist/listHistoryBooking}"><i class="fa-solid fa-clipboard pe-2"></i>Lịch sử
+						đặt
+						phòng</a>
+				</li>
+			</ul>
+
+
+		</nav>
+
+		<!-- Page Content Holder -->
+		<div id="content">
+
+			<nav class="navbar navbar-expand-lg shadow ">
+				<div class="container-fluid">
+
+					<button type="button" id="sidebarCollapse" class="navbar-btn">
+						<span></span>
+						<span></span>
+						<span></span>
+					</button>
+					<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<i class="fas fa-align-justify"></i>
+					</button>
+
+
+					<button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+					<div id="userMenu" class="user-menu">
+						<ul style="list-style-type: none;">
+							<li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+							<li><a th:href="@{/changepass}">Đổi mật khẩu</a></li>
+							<li><a th:href="@{/logout}">Đăng xuất</a></li>
+						</ul>
+					</div>
+
+				</div>
+			</nav>
+			<main class="content px-3 py-2">
+				<div class="container-fluid">
+					<div class="mb-3">
+						<div class="container shadow min-vh-100">
+							<div class="row p-3">
+								<ul class="nav nav-tabs d-flex justify-content-around" id="myTab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<a class="nav-link active" id="chooseRoom-tab" href="#chooseRoom" role="tab"
+											aria-controls="chooseRoom" aria-selected="true">
+											<h4>Chọn phòng</h4>
+										</a>
+									</li>
+									<li class="nav-item" role="presentation">
+										<a class="nav-link" id="profile-tab" href="#profile" role="tab"
+											aria-controls="profile" aria-selected="false">
+											<h4>Thông tin khách hàng</h4>
+										</a>
+									</li>
+									<li class="nav-item" role="presentation">
+										<a class="nav-link" id="confirm-tab" href="#confirm" role="tab"
+											aria-controls="confirm" aria-selected="false">
+											<h4>Xác nhận</h4>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<script>
+								// Disable tab navigation
+								document.querySelectorAll('.nav-link').forEach(function (tab) {
+									tab.addEventListener('click', function (event) {
+										event.preventDefault(); // Prevent default click behavior
+									});
+								});
+							</script>
+
+
+							<form th:action="@{/receptionist-save-booking}" th:object="${booking}" method="post"
+								class="tab-content" id="myTabContent">
+								<div class="tab-pane fade show active" id="chooseRoom" role="tabpanel"
+									aria-labelledby="chooseRoom-tab">
+									<div class=" navSearch row justify-content-center">
+										<div class="col-lg-2">Ngày nhận phòng:
+											<label for="checkIn"></label><input th:field="*{checkIn}" id="checkIn"
+												type="date" class="form-control">
+										</div>
+										<div class="col-lg-2">Ngày trả phòng:
+											<input th:field="*{checkOut}" id="checkOut" type="date"
+												class="form-control">
+										</div>
+										<div class="col-lg-3">Loại phòng:
+											<label for="roomType"></label><select id="roomType" class="form-select">
+												<option value="-1" selected></option>
+												<option th:each="category, categoryStat : ${categories}"
+													th:value="${category.getRoomCategoryId()}"
+													th:text="${category.getRoomCategoryName()}"></option>
+											</select>
+										</div>
+										<div class="col-lg-2 mt-4">
+											<button id="search-btn" type="button" class="btn btn-dark"
+												style="font-size: 1.2em;">Tìm kiếm
+											</button>
+										</div>
+									</div>
+
+
+									<div class="row mt-5 ms-1 me-1 ">
+										<h3>Kết quả:</h3>
+										<div class="d-flex flex-column">
+											<table id="roomTable"
+												class="table table-striped table-hover border align-baseline text-center shadow">
+												<thead class="table-dark">
+													<tr>
+														<th scope="col">STT</th>
+														<th scope="col">Loại phòng</th>
+														<th scope="col">Còn trống</th>
+														<th scope="col">Mô tả</th>
+														<th scope="col">Giường</th>
+														<th scope="col">Diện tích(m2)</th>
+														<th scope="col">Số người</th>
+														<th style="width: 150px;" scope="col">Giá</th>
+														<th scope="col"></th>
+													</tr>
+												</thead>
+												<tbody>
+												</tbody>
+											</table>
+											<div class="alert alert-warning" id="empty-error-message" role="alert">
+												<i class="bi bi-exclamation-triangle"></i> <span>Không tìm thấy phòng
+													trống!!</span>
+											</div>
+										</div>
+									</div>
+
+									<div class="row mt-4 ms-1 me-1">
+										<h3>Phòng đã chọn:</h3>
+
+										<div class="d-flex flex-column">
+											<table id="selectedRoomTable"
+												class="table table-striped table-hover border align-baseline text-center shadow">
+												<thead class="table-dark">
+													<tr>
+														<th scope="col">STT</th>
+														<th scope="col">Loại phòng</th>
+														<th scope="col">Phòng đã đặt</th>
+														<th scope="col">Mô tả</th>
+														<th scope="col">Giường</th>
+														<th scope="col">Diện tích(m2)</th>
+														<th scope="col">Số người</th>
+														<th style="width: 150px;" scope="col">Giá</th>
+														<th scope="col"></th>
+													</tr>
+												</thead>
+												<tbody>
+												</tbody>
+											</table>
+										</div>
+									</div>
+
+									<div class="row mt-2 ms-3 me-3">
+										<h4>Tổng tiền cần thanh toán:</h4>
+										<div class="col-lg-12 border shadow">
+											<div class="row me-5 mt-2">
+												<div class="col ms-3">
+													<h6 class="fw-bold">Tiền phòng:</h6>
+												</div>
+												<div id="roomPrice" class="col text-end"><a>0</a></div>
+											</div>
+											<div class="row mt-2 me-5">
+												<div class="col ms-3">
+													<h6 class="fw-bold">Thuế(10%):</h6>
+												</div>
+												<div class="col text-end"><a id="taxPrice">0</a></div>
+											</div>
+											<div class="row mt-2 me-5">
+												<div class="col ms-3">
+													<h6 class="fw-bold">Tổng:</h6>
+												</div>
+												<div class="col text-end"><span class="fw-bold" id="totalPrice">0</span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="row mt-3">
+										<div class="btn-end text-center">
+											<!-- Sử dụng lớp 'text-center' để căn giữa nút -->
+											<button id="btnContinue" type="button" class="btn btn-dark"
+												style="margin-bottom: 2rem;">Tiếp tục
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+									<div class="container">
+										<div class="row mt-3  me-1">
+											<h4 class="fw-bold">Khách hàng:</h4>
+											<hr>
+											<div class="col-lg-4">
+												<div class="row ms-1">
+													<h6><span class="red-asterisk">(*)</span> Họ tên:</h6>
+													<input onchange="{
+                                                    if (validateName()){
+                                                        updateText('nameCustomer', 'confirmName')
+                                                    }
+                                                }" type="text" class="form-control" th:field="*{name}"
+														id="nameCustomer">
+													<span id="nameError" style="color: red;"></span>
+
+												</div>
+												<div class="row mt-2 ms-1">
+													<h6><span class="red-asterisk">(*)</span> Số điện thoại:</h6>
+													<input onchange="{
+                                                    if (validatePhone()){
+                                                        updateText('phoneCustomer', 'confirmPhone')
+                                                    }
+                                                }" th:field="*{phone}" type="text" class="form-control"
+														id="phoneCustomer">
+													<span id="phoneError" style="color: red;"></span>
+
+												</div>
+												<div class="row mt-2 ms-1">
+													<h6><span class="red-asterisk">(*)</span> Địa chỉ:</h6>
+													<input onchange="{
+                                                    if (validateAddress()){
+                                                        updateText('addressCustomer', 'confirmAddress');
+                                                    }
+                                                }" th:field="*{address}" type="text" class="form-control"
+														id="addressCustomer">
+													<span id="addressError" style="color: red;"></span>
+
+												</div>
+											</div>
+											<div class="col-lg-4">
+											</div>
+											<div class="col-lg-4 ">
+												<div class="row">
+													<h6><span class="red-asterisk">(*)</span> Email:</h6>
+													<input onchange="{
+                                                    if (validateEmail()){
+                                                    updateText('emailCustomer', 'confirmEmail');
+                                                }}" th:field="*{email}" type="text" class="form-control"
+														id="emailCustomer">
+													<span id="emailError" style="color: red;"></span>
+
+												</div>
+												<div class="row mt-2">
+													<h6>Ghi chú:</h6>
+													<label for="noteCustomer"></label><input
+														onchange="updateText('noteCustomer', 'confirmNote')"
+														th:field="*{notes}" type="text" class="form-control"
+														id="noteCustomer" placeholder="">
+												</div>
+												<div class="row mt-2">
+													<h6>Phương thức đặt:</h6>
+													<select onchange="handleChangePaymentType()"
+														th:field="*{paymentTypeId}" class="form-select">
+														<option value="1" selected>Trực tuyến</option>
+														<option value="2">Trực tiếp</option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="row mt-5 ">
+											<h4 class="fw-bold">Thông tin phòng & dịch vụ:</h4>
+											<hr>
+											<h6>Số phòng đặt: <span class="bookedRoomNumber">0</span></h6>
+										</div>
+										<div class="row mt-3">
+											<div class="d-flex flex-column">
+												<table id="bookingInformationRooms"
+													class="table table-striped table-hover border align-baseline text-center">
+													<thead class="table-dark">
+														<tr>
+															<th scope="col">STT</th>
+															<th scope="col">Loại phòng</th>
+															<th scope="col">Số lượng phòng</th>
+															<th scope="col">Ngày nhận phòng</th>
+															<th scope="col">Ngày trả phòng</th>
+															<th scope="col">Giường</th>
+															<th scope="col">Diện tích</th>
+															<th scope="col">Ưu đãi</th>
+															<th scope="col">Giá</th>
+														</tr>
+													</thead>
+													<tbody>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="row mt-4 ms-2 me-1">
+											<h4 class="fw-bold">Tổng tiền cần thanh toán:</h4>
+											<div class="col-lg-12 border shadow">
+												<div class="row mt-2">
+													<div class="col ms-3">
+														<h6 class="fw-bold">Tiền phòng:</h6>
+													</div>
+													<div class="col text-end"><a id="roomPrice-2"></a></div>
+												</div>
+												<div class="row mt-2">
+													<div class="col ms-3">
+														<h6 class="fw-bold">Thuế(10%):</h6>
+													</div>
+													<div class="col text-end"><a id="taxPrice-2"></a></div>
+												</div>
+												<div class="row mt-2">
+													<div class="col ms-3">
+														<h6 class="fw-bold">Tổng:</h6>
+													</div>
+													<div class="col text-end"><span id="totalPrice-2"
+															class="fw-bold"></span>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<div class="row mt-3">
+										<div class="btn-end text-center">
+											<!-- Sử dụng lớp 'text-center' để căn giữa nút -->
+											<button id="btnBack" type="button" class="btn btn-secondary"
+												style="margin-right: 2rem; margin-top: 2rem; margin-bottom: 2rem;">
+												Quay lại
+											</button>
+											<button id="btnContinueProfile" type="button" class="btn btn-dark"
+												style="margin-right: 2rem; margin-top: 2rem;margin-bottom: 2rem;">
+												Tiếp tục
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="confirm" role="tabpanel" aria-labelledby="confirm-tab">
+									<div class="container">
+										<div class="row mt-3 ms-1 me-1">
+											<div class="row">
+												<h4 class="fw-bold">Khách hàng:</h4>
+											</div>
+											<div class="row border shadow ms-1">
+												<div class="col-lg-8">
+													<div class="row me-5">
+														<div class="col ms-2 mt-2">
+															<h6 class="fw-bold">Họ tên: <a id="confirmName"></a></h6>
+														</div>
+													</div>
+													<div class="row mt-2 me-5">
+														<div class="col  ms-2">
+															<h6 class="fw-bold">Số điện thoại: <a id="confirmPhone"></a>
+															</h6>
+														</div>
+													</div>
+													<div class="row mt-2 me-5">
+														<div class="col  ms-2">
+															<h6 class="fw-bold">Địa chỉ: <a id="confirmAddress"></a>
+															</h6>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-4 ">
+													<div class="row me-5 mt-2">
+														<h6 class="fw-bold">Email: <a id="confirmEmail"></a></h6>
+													</div>
+													<div class="row mt-2 me-5">
+														<h6 class="fw-bold">Ghi chú: <a id="confirmNote"></a></h6>
+													</div>
+													<div class="row mt-2 me-5">
+														<h6 class="fw-bold">Phương thức đặt: <a
+																id="confirm-payment-type"></a></h6>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="row mt-5">
+											<h4 class="fw-bold">Thông tin phòng & dịch vụ:</h4>
+											<hr>
+											<h6>Số phòng đặt: <a class="bookedRoomNumber"></a>
+											</h6>
+										</div>
+										<div class="row mt-3">
+											<div class="d-flex flex-column">
+												<table id="lastConfirmTable"
+													class="table table-striped table-hover border align-baseline text-center">
+													<thead class="table-dark">
+														<tr>
+															<th scope="col">STT</th>
+															<th scope="col">Loại phòng</th>
+															<th scope="col">Ngày nhận phòng</th>
+															<th scope="col">Ngày trả phòng</th>
+															<th scope="col">Giường</th>
+															<th scope="col">Diện tích</th>
+															<th scope="col">Ưu đãi</th>
+															<th scope="col">Giá</th>
+														</tr>
+													</thead>
+													<tbody>
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+										<div class="row mt-5">
+											<div class="row ms-2">
+												<h4 class="fw-bold">Thanh toán:</h4>
+											</div>
+											<div class="row ms-2">
+												<div class="col-lg-12 border shadow">
+													<div class="row me-1 mt-2">
+														<div class="col ms-4">
+															<h6 class="fw-bold">Tiền phòng:</h6>
+														</div>
+														<div class="col text-end"><a id="roomPriceConfirm">0</a></div>
+													</div>
+													<div class="row mt-2 me-1">
+														<div class="col ms-4">
+															<h6 class="fw-bold">Thuế(10%):</h6>
+														</div>
+														<div class="col text-end"><a id="taxPriceConfirm">0</a></div>
+													</div>
+													<div class="row mt-2 me-1">
+														<div class="col ms-4">
+															<h6 class="fw-bold">Đặt cọc(50%):</h6>
+														</div>
+														<div class="col text-end"><a id="depositPriceConfirm">0</a>
+														</div>
+													</div>
+													<div class="row mt-2 me-1">
+														<div class="col ms-4">
+															<h6 class="fw-bold">Thanh toán hết:</h6>
+														</div>
+														<div class="col text-end"><span class="fw-bold"
+																id="totalPriceConfirm">0</span>
+														</div>
+													</div>
+													<div class="d-flex justify-content-end">
+														<label class="form-check-label px-1" for="depositPayment">
+															Đặt cọc trước
+														</label>
+														<div class="form-check ">
+															<input th:field="*{payFull}" class="form-check-input"
+																type="radio" id="depositPayment" value="0">
+														</div>
+													</div>
+													<div class="d-flex justify-content-end">
+														<label class="form-check-label px-1" for="fullPayment">
+															Thanh toán hết
+														</label>
+														<div class="form-check mb-4">
+															<input th:field="*{payFull}" class="form-check-input"
+																type="radio" id="fullPayment" value="1" checked>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="row mt-5">
+												<div class="btn-end text-center">
+													<!-- Sử dụng lớp 'text-center' để căn giữa nút -->
+													<button id="btnBackConfirm" type="button" class="btn btn-secondary"
+														style="margin-right: 2rem; margin-top: 2rem; margin-bottom: 2rem;">
+														Quay lại
+													</button>
+													<button type="button" id="booking-btn" class="btn btn-dark" style="margin-right: 2rem; margin-top:
+                                                    2rem;margin-bottom: 2rem;">Đặt Phòng
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="bookingDetailsContainer">
+									<!-- Dynamic input fields will be added here -->
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+
+	</div>
+</body>
+
+
+<script th:inline="javascript">
+	let rooms = null;
+	let selectedRooms = [];
+
+	function updateText(inputId, textId) {
+		document.getElementById(textId).textContent = document.getElementById(inputId).value;
+	}
+	/*<![CDATA[*/
+    let message = [[${message}]]
+    let status = [[${status}]]
+    /*]]>*/
+
+    if (message) {
+		let type = status > 0 ? "success" : "error"
+		let title = status > 0 ? "Thành công" : "Thất bại"
+        //triggerToast("Thất bại", message);
+        var errorToastData = {
+                        title: title,
+                        message: message,
+                        type: type,
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+    }
+	$(document).ready(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+		$("#checkIn").change(() => {
+			let checkinDate = new Date($("#checkIn").val());
+			let currentDate = new Date();
+
+			if (checkinDate < currentDate) {
+				document.getElementById("checkIn").valueAsDate = currentDate;
+				var errorToastData = {
+					title: "Thất bại!",
+					message: "Ngày nhận phòng phải là hôm nay hoặc một ngày trong tương lai.",
+					type: "error",
+					duration: 5000,
+				};
+				toastNotificationCountdown(
+					errorToastData.title,
+					errorToastData.message,
+					errorToastData.type,
+					errorToastData.duration
+				);
+			}
+		})
+		$("#checkOut").change(() => {
+			let checkoutDate = new Date($("#checkOut").val());
+			let checkinDate = new Date($("#checkIn").val());
+
+			if (checkoutDate <= checkinDate) {
+				checkinDate.setDate(checkoutDate.getDate() + 1);
+				document.getElementById("checkOut").valueAsDate = checkinDate;
+				var errorToastData = {
+					title: "Thất bại!",
+					message: "Ngày trả phòng phải lớn hơn ngày nhận phòng ít nhất 1 ngày.",
+					type: "error",
+					duration: 5000,
+				};
+				toastNotificationCountdown(
+					errorToastData.title,
+					errorToastData.message,
+					errorToastData.type,
+					errorToastData.duration
+				);
+				return false;
+			}
+		})
+
+		function addBookingDetailID() {
+			var container = document.getElementById('bookingDetailsContainer');
+			container.innerText = "";
+			var index = 0; // Get the current index
+			selectedRooms.forEach(selectedRoom => {
+				let detailDiv = document.createElement('div');
+				detailDiv.innerHTML = `
+            <input type="hidden" value=${selectedRoom.roomCategoryId} name="bookingDetails[${index}].roomCategoryId" />
+            <input type="hidden" value=${selectedRoom.quantity} name="bookingDetails[${index}].roomNumber" />
+            <!-- Add other fields of CreateHotelBookingDetailDTO as needed -->
+        `;
+				container.appendChild(detailDiv);
+				index++;
+			})
+
+
+		}
+
+
+		$("#search-btn").on("click", function () {
+			if (validateDates()) {
+				var checkIn = $("#checkIn").val();
+				var checkOut = $("#checkOut").val();
+				var roomType = $("#roomType").val();
+				var roomNumber = $("#roomNumber").val();
+				console.log(roomType);
+				// Create the data object
+				var searchData = {
+					checkIn: checkIn,
+					checkOut: checkOut,
+					categoryId: roomType,
+					roomNumber: roomNumber,
+				};
+
+				// Make an AJAX request to the backend
+				$.ajax({
+					type: "POST",
+					url: "/search-room",  // Replace with the actual backend endpoint
+					contentType: "application/json",  // Set content type to JSON
+					data: JSON.stringify(searchData),  // Convert the object to JSON string
+					success: function (response) {
+						// Handle the success response from the server
+						updateTableView(response);
+						clearBookingDetails();
+						// You can update your UI or perform additional actions here
+					},
+					error: function (error) {
+						console.error("Error during AJAX request:", error);
+						// Handle errors if needed
+					}
+				});
+			}
+		});
+
+
+		function addBookingDetail() {
+			// Select the table body
+			const tbody = $("#selectedRoomTable > tbody");
+			tbody.empty();
+			console.log(tbody);
+			let totalNumber = 0;
+			// Update the table with new data
+			let index = 1;
+			selectedRooms.forEach(selectedRoom => {
+				totalNumber = totalNumber + selectedRoom.quantity;
+				var row = $("<tr></tr>");
+				row.id = selectedRoom.categoryId;
+				row.append("<th scope='row'>" + index++ + "</th>");
+				row.append("<td>" + selectedRoom.roomCategoryName + "</td>");
+				// Add other columns based on room properties
+				const roomNumberColumn = $("<td></td>");
+				const roomNumberInput = $("<input min='1' type='number'>").val(selectedRoom.quantity).on("input", function (event) {
+					let oldValue = selectedRoom.quantity;
+					selectedRoom.quantity = this.value;
+
+					if (selectedRoom.quantity <= 0) {
+						selectedRoom.quantity = oldValue;
+						this.value = oldValue;
+						var errorToastData = {
+							title: "Thất bại!",
+							message: "Vui lòng nhập một số lớn hơn 0!",
+							type: "error",
+							duration: 5000,
+						};
+						toastNotificationCountdown(
+							errorToastData.title,
+							errorToastData.message,
+							errorToastData.type,
+							errorToastData.duration
+						);
+					} else if (selectedRoom.numberAvailable < selectedRoom.quantity) {
+						selectedRoom.quantity = oldValue;
+						this.value = oldValue;
+						var errorToastData = {
+							title: "Thất bại!",
+							message: "Đã đạt số lượng phòng có sẵn tối đa không thể thêm nữa!",
+							type: "error",
+							duration: 5000,
+						};
+						toastNotificationCountdown(
+							errorToastData.title,
+							errorToastData.message,
+							errorToastData.type,
+							errorToastData.duration
+						);
+
+					} else {
+						updateLastConfirmBooking();
+						updateInformationOfBooking();
+						addBookingDetailID();
+						calculatePrices();
+					}
+				});
+				roomNumberColumn.append(roomNumberInput);
+				row.append(roomNumberColumn);
+				// Example columns for demonstration, replace with actual data
+				// row.append("<td><input min='0' type='number' value='"+selectedRoom.quantity+"'/></td>");
+				row.append("<td>" + selectedRoom.description + "</td>");
+				row.append("<td>" + selectedRoom.bed + "</td>");
+				row.append("<td>" + selectedRoom.square + "</td>");
+				row.append("<td>" + selectedRoom.numberPerson + "</td>");
+				row.append("<td>" + formatCurrency(selectedRoom.price) + "</td>");
+				// row.append('<input  th:value="1" type="hidden" th:field="*{bookingDetails[__' + index + '__].roomNumber}" />');
+				// row.append('<input  th:value="' + room.categoryId + '" type="hidden" th:field="*{bookingDetails[__' + index + '__].roomCategoryId}" />');
+
+				const buttonColumn = $("<td></td>");
+				const addButton = $("<button></button>")
+					.addClass("btn button btn-dark")
+					.html("<i class='bi bi-trash'></i>")
+					.on("click", function () {
+						deleteRow(this, selectedRoom.roomCategoryId);
+						console.log("CLICK");
+						// Add your logic here for button click
+					});
+				buttonColumn.append(addButton);
+
+				row.append(buttonColumn);
+				// Append the row to the table body
+				tbody.append(row);
+			})
+			updateRoomNumber();
+			calculatePrices();
+			updateInformationOfBooking();
+			updateLastConfirmBooking();
+		}
+
+		function clearBookingDetails() {
+			// Select the table body
+			selectedRooms = [];
+			const tbody = $("#selectedRoomTable > tbody");
+			tbody.empty(); // Clear the table body to remove all rows
+			calculatePrices(); // Recalculate prices after clearing the content
+			updateInformationOfBooking(); // Update additional booking information
+		}
+
+		function updateInformationOfBooking() {
+			const tbody = $("#bookingInformationRooms > tbody");
+			tbody.empty();
+			const childNumber = document.querySelector("#bookingInformationRooms > tbody").childElementCount + 1;
+			console.log(tbody);
+			let index = 1;
+			var checkinDate = new Date(document.getElementById('checkIn').value);
+			var checkoutDate = new Date(document.getElementById('checkOut').value);
+			selectedRooms.forEach(selectedRoom => {
+				console.log("LAST PAGE:" + JSON.stringify(selectedRoom))
+				let row = $("<tr></tr>");
+
+				row.append("<th scope='row'>" + index + "</th>");
+				row.append("<td>" + selectedRoom.roomCategoryName + "</td>");
+				row.append("<td>" + selectedRoom.quantity + "</td>");
+				row.append("<td>" + getFormatDateTime(checkinDate) + "</td>");
+				row.append("<td>" + getFormatDateTime(checkoutDate) + "</td>");
+				row.append("<td>" + selectedRoom.bed + "</td>");
+				row.append("<td>" + selectedRoom.square + "</td>");
+				row.append("<td>" + "Bữa sáng" + "</td>");
+				row.append("<td>" + formatCurrency(selectedRoom.price) + "</td>");
+				// Append the row to the table body
+				tbody.append(row);
+				index++;
+				$("#bookedRoomNumber").text(updateRoomNumber());
+			})
+		}
+
+		updateTableView([]); // Default state of first load
+		function updateTableView(response) {
+			// Assuming the response is a JSON object with room details
+			rooms = response;
+			console.log(rooms)
+			// Select the table body
+			const tbody = $("#roomTable tbody");
+			const emptyErrorMessage = $("#empty-error-message");
+
+			if (rooms.length == 0) {
+				tbody.parent().css("display", "none");
+				emptyErrorMessage.css("display", "block");
+			} else {
+				tbody.parent().css("display", "block");
+				emptyErrorMessage.css("display", "none");
+
+			}
+			// Clear existing table rows
+			if (rooms && rooms.length > 0) {
+				tbody.empty();
+				let index = 1;
+				// Update the table with new data
+				rooms.forEach(room => {
+					var row = $("<tr></tr>");
+					row.append("<th scope='row'>" + index + "</th>");
+					row.append("<td>" + room.roomCategoryName + "</td>");
+					// Add other columns based on room properties
+
+					// Example columns for demonstration, replace with actual data
+					row.append("<td>" + room.numberAvailable + "</td>");
+					row.append("<td>" + room.description + "</td>");
+					row.append("<td>" + room.bed + "</td>");
+					row.append("<td>" + room.square + "</td>");
+					row.append("<td>" + room.numberPerson + "</td>");
+					const $price = $("<td></td>");
+					$price.css("min-width", "170px");
+					$price.text(formatCurrency(room.price) + "  ");
+					const toolTipsString = 'Ngày thường: ' +
+						formatCurrency(Number(room.price) * 1) +
+
+						', Cuối tuần: ' +
+						formatCurrency(Number(room.price) * 1.5) +
+
+						', Ngày lễ: ' +
+						formatCurrency(Number(room.price) * 3);
+
+
+					const $toolTips =
+						$("<i class=\"bi bi-exclamation-circle-fill\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"" + toolTipsString + "\"></i>\n");
+
+
+					$price.append($toolTips);
+					row.append($price);
+
+					const buttonColumn = $("<td></td>");
+					const addButton = $("<button type='button'></button>")
+						.addClass("btn button btn-dark")
+						.text("Thêm")
+						.on("click", function () {
+							console.log("CLICK");
+							let numberAvailable = room.numberAvailable;
+							let existRoom = selectedRooms.find(r => r.roomCategoryId === room.roomCategoryId);
+
+							if (!existRoom) {
+								selectedRooms.push({...room, "quantity": 1});
+							} else {
+								if (existRoom.quantity == room.numberAvailable) {
+									var errorToastData = {
+										title: "Thất bại!",
+										message: "Đã đạt số lượng phòng có sẵn tối đa không thể thêm nữa!",
+										type: "error",
+										duration: 5000,
+									};
+									toastNotificationCountdown(
+										errorToastData.title,
+										errorToastData.message,
+										errorToastData.type,
+										errorToastData.duration
+									);
+								} else {
+									existRoom.quantity = existRoom.quantity + 1;
+								}
+							}
+							addBookingDetail();
+							addBookingDetailID();
+							// Add your logic here for button click
+						});
+					buttonColumn.append(addButton);
+
+					row.append(buttonColumn);
+					// Append the row to the table body
+					tbody.append(row);
+					index++;
+				});
+			}
+		}
+
+		function calculatePrices() {
+			// Select the tbody element within the table
+			const roomPriceE = $("#roomPrice");
+			const taxPriceE = $("#taxPrice");
+			const totalPriceE = $("#totalPrice");
+			const roomPriceConfirmE = $("#roomPriceConfirm");
+			const taxPriceConfirmE = $("#taxPriceConfirm");
+			const totalPriceConfirmE = $("#totalPriceConfirm");
+			const depositPriceConfirmE = $("#depositPriceConfirm");
+
+			var checkinDate = new Date(document.getElementById('checkIn').value);
+			var checkoutDate = new Date(document.getElementById('checkOut').value);
+			checkinDate.setHours(0, 0, 0, 0);
+			checkoutDate.setHours(0, 0, 0, 0);
+
+			var timeDifference = checkoutDate - checkinDate;
+
+			var daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+			console.log("Number of days:", daysDifference);
+
+			// Initialize the total price
+			let roomPrice = 0;
+
+			selectedRooms.forEach(room => {
+				const price = room.price;
+				const numberOfBooking = room.quantity;
+				const totalARoomPrice = calculateRoomPrice(checkinDate, checkoutDate, price) * numberOfBooking;
+				roomPrice += totalARoomPrice;
+			})
+
+
+			let taxPrice = roomPrice * 0.1;
+			let totalPrice = taxPrice + roomPrice;
+			let depositPrice = totalPrice * 0.5;
+
+			roomPriceE.text(formatNumberWithPeriods(roomPrice));
+			taxPriceE.text(formatNumberWithPeriods(taxPrice));
+			totalPriceE.text(formatNumberWithPeriods(totalPrice));
+			roomPriceConfirmE.text(formatNumberWithPeriods(roomPrice));
+			taxPriceConfirmE.text(formatNumberWithPeriods(taxPrice));
+			totalPriceConfirmE.text(formatNumberWithPeriods(totalPrice));
+			depositPriceConfirmE.text(formatNumberWithPeriods(depositPrice));
+
+			$("#taxPrice-2").text(formatNumberWithPeriods(taxPrice));
+			$("#totalPrice-2").text(formatNumberWithPeriods(totalPrice))
+			$("#roomPrice-2").text(formatNumberWithPeriods(roomPrice))
+			// Log or use the total price as needed
+			console.log("Total Price: " + totalPrice);
+			// You can use the 'totalPrice' variable as needed in your application
+		}
+
+		function formatNumberWithPeriods(number) {
+			return formatCurrency(number);
+		}
+
+		function deleteRow(button, categoryId) {
+			let row = button.parentNode.parentNode;
+			row.parentNode.removeChild(row);
+			selectedRooms = selectedRooms.filter(room => room.roomCategoryId !== categoryId);
+			addBookingDetail();
+			addBookingDetailID();
+			// You can optionally perform additional actions or re-render the page here
+		}
+
+		function validateDates() {
+			var checkinDate = new Date(document.getElementById('checkIn').value);
+			var checkoutDate = new Date(document.getElementById('checkOut').value);
+			console.log("VALIDATE CHECKKIN:" + checkinDate)
+			// Get the current date
+			var currentDate = new Date();
+			currentDate.setHours(0, 0, 0, 0);
+
+			// Set check-in and check-out dates to the same day with no time
+			checkinDate.setHours(0, 0, 0, 0);
+			checkoutDate.setHours(0, 0, 0, 0);
+
+			// Check if check-in date is valid
+			console.log("Checkin:" + checkinDate);
+			console.log("Current:" + currentDate);
+
+			if (checkinDate < currentDate) {
+				var errorToastData = {
+                        title: "Thất bại!",
+                        message: "Ngày nhận phòng phải là hôm nay hoặc một ngày trong tương lai.",
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+				return false;
+			}
+
+			// Check if check-out date is valid
+			if (checkoutDate <= checkinDate) {
+				var errorToastData = {
+                        title: "Thất bại!",
+                        message: "Ngày trả phòng phải ít nhất là một ngày sau ngày nhận phòng.",
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+				return false;
+			}
+			return true;
+		}
+
+		function updateLastConfirmBooking() {
+			console.log("LAST PAGE")
+			const tbody = $("#lastConfirmTable > tbody");
+			tbody.empty();
+			console.log(tbody);
+			let index = 1;
+			var checkinDate = new Date(document.getElementById('checkIn').value);
+			var checkoutDate = new Date(document.getElementById('checkOut').value);
+			selectedRooms.forEach(selectedRoom => {
+				console.log("LAST PAGE:" + JSON.stringify(selectedRoom))
+				let row = $("<tr></tr>");
+				row.append("<th scope='row'>" + index + "</th>");
+				row.append("<td>" + selectedRoom.roomCategoryName + "</td>");
+				// Add other columns based on room properties
+
+				// Example columns for demonstration, replace with actual data
+				row.append("<td>" + getFormatDateTime(checkinDate) + "</td>");
+				row.append("<td>" + getFormatDateTime(checkoutDate) + "</td>");
+				row.append("<td>" + selectedRoom.bed + "</td>");
+				row.append("<td>" + selectedRoom.square + "</td>");
+				row.append("<td>" + "Bữa sáng" + "</td>");
+				row.append("<td>" + formatCurrency(selectedRoom.price) + "</td>");
+				// Append the row to the table body
+				tbody.append(row);
+				index++;
+			});
+		}
+
+		document.getElementById('btnContinue').addEventListener('click', function () {
+			// Use Bootstrap's Tab JavaScript API to switch to the "profile" tab
+
+			if (selectedRooms.length > 0) {
+				let tab = new bootstrap.Tab(document.getElementById('profile-tab'));
+				tab.show();
+			} else {
+				var errorToastData = {
+                        title: "Thất bại!",
+                        message: "Bạn phải chọn phòng trước khi điền thông tin khách hàng",
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+			}
+		});
+		document.getElementById('btnBack').addEventListener('click', function () {
+			// Switch to the "chooseRoom" tab
+			var tab = new bootstrap.Tab(document.getElementById('chooseRoom-tab'));
+			tab.show();
+		});
+
+		document.getElementById('btnContinueProfile').addEventListener('click', function () {
+			// Switch to the "confirm" tab
+			if (validateName() & validatePhone() & validateAddress() & validateEmail()) {
+
+				var tab = new bootstrap.Tab(document.getElementById('confirm-tab'));
+				tab.show();
+			} else {
+				var errorToastData = {
+                        title: "Thất bại!",
+                        message: "Điền đúng thông tin khách hàng trước khi xác nhận thanh toán",
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+			}
+
+		});
+
+		document.getElementById('btnBackConfirm').addEventListener('click', function () {
+			// Switch back to the "profile" tab
+			var tab = new bootstrap.Tab(document.getElementById('profile-tab'));
+			tab.show();
+		});
+	});
+
+	function validateName() {
+		var nameInput = document.getElementById("nameCustomer");
+		var nameError = document.getElementById("nameError");
+
+		// Regular expression for name validation (uppercase and lowercase letters)
+		const nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s|_]+$/u;
+		console.log(nameRegex.test(nameInput.value))
+		if (!nameRegex.test(nameInput.value)) {
+			nameError.innerText = "Nhập tên chỉ chứa chữ cái viết hoa, thường và khoảng trắng";
+			return false;
+		} else if (nameInput.value.length > 50) {
+			nameError.innerText = "Tên không được vượt quá 50 ký tự";
+			return false;
+		} else {
+			nameError.innerText = "";
+			return true;
+		}
+	}
+
+	function validateEmail() {
+		var emailInput = document.getElementById("emailCustomer");
+		var emailError = document.getElementById("emailError");
+
+		// Regular expression for email validation
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!emailRegex.test(emailInput.value)) {
+			emailError.innerText = "Nhập một địa chỉ email hợp lệ";
+			return false;
+		} else if (emailInput.value.length > 50) {
+			emailError.innerText = "Email không được vượt quá 50 ký tự";
+			return false;
+		} else {
+			emailError.innerText = "";
+			return true;
+		}
+	}
+
+	function validatePhone() {
+		var phoneInput = document.getElementById("phoneCustomer");
+		var phoneError = document.getElementById("phoneError");
+
+		// Regular expression for Vietnamese phone numbers
+		var phoneRegex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+
+		if (!phoneRegex.test(phoneInput.value)) {
+			phoneError.innerText = "Nhập đúng định dạng số điện thoại Việt Nam";
+			return false;
+		} else {
+			phoneError.innerText = "";
+			return true;
+		}
+	}
+
+	function validateAddress() {
+		var address = document.getElementById("addressCustomer");
+		var addressError = document.getElementById("addressError");
+
+		// Regular expression for name validation (uppercase and lowercase letters)
+		const addressReg = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/u;
+
+		if (!addressReg.test(address.value)) {
+			addressError.innerText = "Không được để trống địa chỉ";
+			return false;
+		} else if (address.value.length > 50) {
+			addressError.innerText = "Địa chỉ không được vượt quá 50 ký tự";
+			return false;
+		} else {
+			addressError.innerText = "";
+			return true;
+		}
+	}
+
+	document.getElementById('booking-btn').addEventListener("click", (e) => {
+		e.preventDefault();
+		validateName();
+		validateEmail();
+		validatePhone();
+		console.log("Submit")
+		console.log(validateName())
+		console.log(validateEmail())
+		console.log(validatePhone())
+		if (validateName() && validateEmail() && validatePhone()) {
+
+			console.log(document.getElementById('myTabContent'));
+			document.getElementById('myTabContent').submit();
+		} else {
+			var errorToastData = {
+                        title: "Lỗi!",
+                        message: "Cần chỉnh sửa lại thông tin chính xác trước khi đặt phòng",
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+		}
+	})
+
+	function setDefaultDates() {
+		var currentDate = new Date();
+		document.getElementById("checkIn").value = getFormatDateTime(currentDate);
+
+		var nextDay = new Date();
+		nextDay.setDate(nextDay.getDate() + 1);
+		document.getElementById("checkOut").value = getFormatDateTime(nextDay);
+	}
+
+	window.onload = setDefaultDates;
+
+	function formatCurrency(number) {
+		if (isNaN(number)) {
+			return 'Invalid number';
+		}
+		// Convert the number to a string and split it into integer and decimal parts
+		const parts = number.toString().split('.');
+
+		// Format the integer part with commas
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+		// Join the parts and append 'VND'
+		const formattedNumber = parts.join('.') + ' VND';
+
+		return formattedNumber;
+	}
+
+	function getFormatDateTime(date, includeYear = true) {
+		var day = ("0" + date.getDate()).slice(-2);
+		var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		var today = includeYear ? date.getFullYear() + "-" + (month) + "-" + (day) : (month) + "-" + (day);
+		return today;
+	}
+
+	function isNormalDayOrHoliday(date) {
+		// Check if the date is a weekend (Saturday or Sunday) - Use 3 to represents Holiday
+		const dayOfWeek = date.getDay();
+		if (dayOfWeek === 0 || dayOfWeek === 6) {
+			return 2;
+		}
+
+		// Check if the date is a predefined holiday
+		const holidays = [
+			// Add your list of holidays here (in the format YYYY-MM-DD)
+			"01-01", "04-30", "05-01", "09-02",
+			// Add more holidays as needed
+		];
+
+		const formattedDate = getFormatDateTime(date, false);
+		console.log("Format Date:" + formattedDate);
+		if (holidays.includes(formattedDate)) { //- Use 3 to represents Weekend
+			return 3;
+		}
+
+		return 1;
+	}
+
+	function calculateRoomPrice(startDate, endDate, roomPrice) {
+		const oneDayInMillis = 24 * 60 * 60 * 1000;
+		let totalPrice = 0;
+
+		// Iterate through each day in the date range
+		for (let currentDate = new Date(startDate); currentDate < endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+			// Check if the current day is a normal day, weekend, or holiday
+			const dayType = isNormalDayOrHoliday(currentDate);
+
+			// Adjust the multiplier based on the day type
+			let multiplier = 1;
+			if (dayType == 2) {
+				multiplier = 1.5; // If it's a weekend, multiply by 1.5
+			} else if (dayType == 3) {
+				multiplier = 3; // If it's a holiday, multiply by 2 (adjust as needed)
+			}
+			console.log("MULTIPLER:" + multiplier);
+			// Add the room price multiplied by the multiplier to the total
+			totalPrice += roomPrice * multiplier;
+		}
+
+		return totalPrice;
+	}
+
+	function updateRoomNumber() {
+		let totalNumber = selectedRooms.reduce(
+			(accumulator, currentValue) => Number(accumulator) + Number(currentValue.quantity),
+			0,
+		);
+		for (let elementsByClassNameElement of document.getElementsByClassName("bookedRoomNumber")) {
+			elementsByClassNameElement.innerHTML = totalNumber;
+		}
+		return totalNumber;
+	}
+
+	function handleChangePaymentType() {
+		let $paymentSelect = $("#paymentTypeId");
+		let selectedPayment = $paymentSelect.val();
+		let $paymentDisplayer = $("#confirm-payment-type");
+		console.log("selectedPayment:" + selectedPayment);
+		if (selectedPayment == 1) {
+			$paymentDisplayer.text("Trực tuyến")
+		} else {
+			$paymentDisplayer.text("Trực tiếp")
+		}
+		console.log("VALUE: " + selectedPayment);
+	}
+
+	handleChangePaymentType();
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="...">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet">
+    <title>Đăng nhập</title>
+
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+</head>
+
+<body>
+<div id="toast"></div>
+<div class="wrapper">
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-6 side-image">
+					<span>
+						<a th:href="@{/}">
+							<i class="fas fa-arrow-left"></i>
+							<span>Trang chủ</span>
+						</a>
+					</span>
+
+                <img src="../assets/img/login/hotelLogin.jpg" alt="">
+
+            </div>
+            <div class="col-md-6 right">
+
+                <div class="input-box">
+
+                    <header>Chào mừng bạn đã đến với 3HKT Hotel</header>
+
+                    <form class="form-horizontal" method="post" role="form" th:action="@{/loginProcess}">
+                        <div class="input-field">
+                            <input type="text" class="input" id="email" name="email" required="" pattern=".{5,255}"
+                                   title="Email phải dài từ 5 đến 255 ký tự" placeholder="Email" autocomplete="off">
+                        </div>
+                        <div class="input-field">
+                            <p id="email-error" style="color: red;"></p>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" class="input" id="password" name="password"
+                                   placeholder="Mật khẩu" required>
+                            <i class="toggle-password bi bi-eye pe-2" onclick="togglePassword()"></i>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input " type="checkbox" id="rememberMe" name="remember-me">
+                                <label class="form-check-label " for="rememberMe"> Nhớ
+                                    tài khoản </label>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <input id="submit-button" type="submit" class="submit" value="Đăng nhập">
+                        </div>
+
+                        <div class="forgotpass">
+								<span><a th:href="@{/hbs/resetPassword}">Quên mật
+										khẩu ?</a></span>
+                        </div>
+
+                        <!--                        <div th:if="${param.error}">-->
+                        <!--                            <div class="alert alert-danger" th:text="${session.errorMessage}">Không đúng Email hoặc-->
+                        <!--                                mật-->
+                        <!--                                khẩu !-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+
+                        <!--                        <div class="input-field" th:if="${param.logout}">-->
+                        <!--                            <p class="alert alert-success">Bạn đã đăng xuất thành công!</p>-->
+                        <!--                        </div>-->
+
+                        <div class="signin">
+								<span>Chưa có tài khoản ? <a th:href="@{/registration}">Đăng
+										ký ở đây</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script crossorigin="anonymous" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    var submitButton = document.getElementById("submit-button");
+
+    document.getElementById("email").addEventListener("input", function () {
+        var email = this.value.trim();
+        var pattern =
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!pattern.test(email)) {
+            document.getElementById("email-error").textContent = "Email không đúng định dạng.";
+
+        } else {
+            document.getElementById("email-error").textContent = "";
+
+        }
+    });
+    var pass2Message = /*[[${param.logout}]]*/ '';
+    if (pass2Message != null) {
+        var toastData = {
+            title: "Thành công",
+            message: 'Bạn đã đăng xuất thành công',
+            type: "success",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            toastData.title,
+            toastData.message,
+            toastData.type,
+            toastData.duration
+        );
+    }
+    var errorMessage = /*[[${param.error}]]*/ '';
+    var errorMess = /*[[${session.errorMessage}]]*/ '';
+    if (errorMessage != null) {
+        var errorToastData = {
+            title: "Lỗi",
+            message: errorMess,
+            type: "error",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            errorToastData.title,
+            errorToastData.message,
+            errorToastData.type,
+            errorToastData.duration
+        );
+
+    }
+
+
+</script>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.querySelector('.toggle-password');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('bi-eye');
+            toggleIcon.classList.add('bi-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('bi-eye-slash');
+            toggleIcon.classList.add('bi-eye');
+        }
+    }
+</script>
+<!-- Custom Js Link -->
+<script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

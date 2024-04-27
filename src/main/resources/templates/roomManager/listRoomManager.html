@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí phòng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="...">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <link rel="stylesheet" href="/assets/css/checkInReceptionist.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <script src="/assets/js/chart.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+
+</head>
+
+<body>
+
+<body data-bs-target=".navbar" data-bs-offset="100"></body>
+<div id="toast"></div>
+<div class="wrapper">
+
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+
+        <ul class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Quản lí Phòng</p>
+            <li th:class="${activePage == '/management/viewRoom'} ? 'active'">
+                <a th:href="@{/management/viewRoom}"><i class="bi bi-currency-exchange pe-1"></i>Phòng</a>
+            </li>
+            <li th:class="${activePage == '/management/viewRoomType'} ? 'active'">
+                <a th:href="@{/management/viewRoomType }"><i class="bi bi-list-columns-reverse pe-1"></i>Loại phòng</a>
+            </li>
+            <li th:class="${activePage == '/management/viewRoomCatgoryPrice'} ? 'active'">
+                <a th:href="@{/management/viewRoomCatgoryPrice}"><i class="bi bi-arrow-return-left pe-1"></i>Giá
+                    tiền</a>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul>
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a>
+                        </li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <form th:method="Get" th:action="@{/management/viewRoom}">
+            <div class="table-responsive">
+                <h3 class="ms-3 mb-4 mt-2 fw-bold">Danh sách phòng</h3>
+                <div class="row justify-content-center ms-2">
+                    <div class="col-lg-3">
+                        <p>Tầng: <select class="form-select" name="floor">
+                            <option selected value=""></option>
+                            <option th:selected="${floor == 1}" value="1">1</option>
+                            <option th:selected="${floor == 2}" value="2">2</option>
+                            <option th:selected="${floor == 3}" value="3">3</option>
+                            <option th:selected="${floor == 4}" value="4">4</option>
+                            <option th:selected="${floor == 5}" value="5">5</option>
+                            <option th:selected="${floor == 6}" value="6">6</option>
+                        </select></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>Trạng thái: <select class="form-select" name="status">
+                            <option selected value="0"></option>
+                            <option th:selected="${status == 1}" value="1">Đang ở</option>
+                            <option selected th:selected="${status == 2}" value="2">Sẵn sàng
+                            </option>
+                            <option th:selected="${status == 3}" value="3">Chưa dọn</option>
+                            <option th:selected="${status == 4}" value="4">Đã dọn</option>
+                            <option th:selected="${status == 5}" value="5">Ngưng hoạt động</option>
+                        </select></p>
+                    </div>
+                    <div class="col mt-4">
+                        <button type="submit" class="btn btn-dark" style="font-size: 1.2em;">Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-striped table-hover border align-baseline text-start shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên phòng</th>
+                        <th scope="col">Tầng</th>
+                        <th scope="col">Giường</th>
+                        <th scope="col">Góc nhìn</th>
+                        <th scope="col">Loại phòng</th>
+                        <th scope="col">Giá tiền</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="view, count : ${viewServiceDTOList}">
+                        <td th:text="${count.count + (currentPage * pageSize)}">
+                        </td>
+                        <td th:text="${view.getRoom().getRoomName()}"></td>
+                        <td class="ps-3" th:text="${view.getRoom().getFloor()}"></td>
+                        <td th:text="${view.getRoom().getBedSize()}"></td>
+                        <td th:text="${view.getRoom().getViewCity()}"></td>
+                        <td th:text="${view.getRoomCategories().getRoomCategoryName()}"></td>
+                        <td
+                                th:text="${#numbers.formatDecimal(view.getCategoryRoomPrice().getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+
+                        </td>
+
+                        <td th:text="${view.getRoomStatus().getStatusName()}"></td>
+                        <th:block
+                                th:if="${view.getRoomStatus().getRoomStatusId() == 3 || view.getRoomStatus().getRoomStatusId() == 4}">
+
+                            <td>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn button btn-dark" data-bs-toggle="modal"
+                                        th:data-bs-target="'#exampleModal_' + ${view.getRoom().getRoomId()}">
+                                    Cập nhật
+                                </button>
+
+
+                            </td>
+                        </th:block>
+                        <th:block
+                                th:unless="${view.getRoomStatus().getRoomStatusId() == 3 || view.getRoomStatus().getRoomStatusId() == 4}">
+
+                            <td>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn button btn-dark" data-bs-toggle="modal"
+                                        th:attr="disabled=${view.getRoomStatus().getRoomStatusId() != 3 || view.getRoomStatus().getRoomStatusId() != 4}"
+
+                                        th:data-bs-target="'#exampleModal_' + ${view.getRoom().getRoomId()}">
+                                    Cập nhật
+                                </button>
+
+                            </td>
+                        </th:block>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav class="mt-3" th:if="${totalPages > 1}" aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:if="${currentPage > 0}">
+                        <a class="page-link"
+                           th:href="@{/management/viewRoom(page=0, floor=${floor}, status=${status})}">&laquo;&laquo;</a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage > 0}">
+                        <a class="page-link"
+                           th:href="@{/management/viewRoom(page=${currentPage - 1}, floor=${floor}, status=${status})}">&laquo;</a>
+                    </li>
+
+                    <li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:class="${pageNumber == currentPage} ? 'page-item active' : 'page-item'">
+                        <a class="page-link"
+                           th:href="@{/management/viewRoom(page=${pageNumber}, floor=${floor}, status=${status})}"
+                           th:text="${pageNumber + 1}"></a>
+                    </li>
+
+                    <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                        <a class="page-link"
+                           th:href="@{/management/viewRoom(page=${currentPage + 1}, floor=${floor}, status=${status})}">&raquo;</a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                        <a class="page-link"
+                           th:href="@{/management/viewRoom(page=${totalPages - 1}, floor=${floor}, status=${status})}">&raquo;&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </form>
+    </div>
+
+</div>
+
+<!-- Modal update -->
+<th:block th:each="view, count : ${viewServiceDTOList}">
+    <div class="modal fade" th:id="'exampleModal_' + ${view.getRoom().getRoomId()}" tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">Thay đổi trạng thái
+                        phòng
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <input name="roomId" th:id="'roomId_' + ${view.getRoom().getRoomId()}" type="hidden"
+                       th:value="${view.getRoom().getRoomId()}">
+                <div class="modal-body">
+                    <p class="fw-bold text-start">Trạng thái:
+                        <select class="form-select mt-2" name="status"
+                                th:id="'status_' + ${view.getRoom().getRoomId()}">
+                            <option value="3" th:selected="${view.getRoomStatus().getRoomStatusId()==3}">
+                                Chưa dọn
+                            </option>
+                            <option value="4" th:selected="${view.getRoomStatus().getRoomStatusId()==4}">
+                                Đã dọn
+                            </option>
+                            <option value="2" th:selected="${view.getRoomStatus().getRoomStatusId()==2}">
+                                Sẵn sàng
+                            </option>
+                        </select>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                    </button>
+                    <button type="button" class="btn button btn-dark"
+                            th:data-bs-dismiss="'#' + ${view.getRoom().getRoomId()}"
+                            th:onclick="'updateRoomFields(' +  ${view.getRoom().getRoomId() }+ ')'">
+
+                        Cập
+                        nhật
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+
+    // Function to update room fields
+    function updateRoomFields(count) {
+        const statusSelect = document.getElementById('status_' + count).value;
+        const roomId = document.getElementById('roomId_' + count).value;
+
+        const updateData = {
+            roomId: roomId,
+            status: statusSelect
+        };
+
+        fetch('/roomManager/updateStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData)
+        }).then(response => response.json())
+            .then(data => {
+                    if (data && data.message === "Cập nhật thành công") {
+                        var toastData = {
+                            title: "Thành công!",
+                            message: "Cập nhật thành công.",
+                            type: "success",
+                            duration: 5000,
+                        };
+                        localStorage.setItem('toastData', JSON.stringify(toastData));
+                        setTimeout(function () {
+                            window.location.href = `/management/viewRoom`;
+                        }, 100);
+                    } else {
+
+                        var errorToastData = {
+                            title: "Lỗi!",
+                            message: (data && data.error ? data.error : (data && data.exceptionMessage ? data.exceptionMessage : 'Lỗi khi cập nhật.')),
+                            type: "error",
+                            duration: 5000,
+                        };
+                        toastNotificationCountdown(
+                            errorToastData.title,
+                            errorToastData.message,
+                            errorToastData.type,
+                            errorToastData.duration
+                        );
+                    }
+                }
+            ).catch(error => {
+
+            var errorToastData = {
+                title: "Lỗi!",
+                message: error,
+                type: "error",
+                duration: 5000,
+            };
+            toastNotificationCountdown(
+                errorToastData.title,
+                errorToastData.message,
+                errorToastData.type,
+                errorToastData.duration
+            );
+        });
+    }
+
+    /*]]>*/
+</script>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+</html>

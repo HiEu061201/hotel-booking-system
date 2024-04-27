@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí kinh doanh</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="...">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <link rel="stylesheet" href="/assets/css/checkInReceptionist.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <script src="/assets/js/chart.js"></script>
+    <script src="/assets/js/main.js"></script>
+</head>
+
+<body>
+
+<body data-bs-target=".navbar" data-bs-offset="100"></body>
+<div id="toast"></div>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+        <ul class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Quản lý kinh doanh</p>
+            <li th:class="${activePage == '/saleManager/viewService'} ? 'active'">
+                <a href="/saleManager/viewService"><i class="bi bi-list-task pe-1"></i>Danh sách dịch vụ</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/viewListNews'} ? 'active'">
+                <a href="/saleManager/viewListNews"><i class="bi bi-list-columns-reverse pe-1"></i>Danh sách tin
+                    tức</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listHistoryBooking'} ? 'active'">
+                <a href="/saleManager/listHistoryBooking"><i class="bi bi-list-nested pe-1"></i>Danh sách đặt
+                    phòng</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/viewListContact'} ? 'active'">
+                <a href="/saleManager/viewListContact"><i class="bi bi-telephone pe-1"></i>Liên hệ</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listFeedback'} ? 'active'">
+                <a href="/saleManager/listFeedback"><i class="bi bi-arrow-return-left pe-1"></i>Phản hồi</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listRefund'} ? 'active'">
+                <a href="/saleManager/listRefund"><i class="bi bi-arrow-return-left pe-1"></i>Yêu cầu hoàn tiền</a>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul>
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a>
+                        </li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="table-responsive">
+            <h3 class="ms-2 mb-4 fw-bold">Danh sách dịch vụ</h3>
+            <form th:method="Get" th:action="@{/saleManager/viewService}">
+                <div class="row ms-2">
+                    <div class="col-lg-2">
+                        <p>Tên <input type="text" class="form-control" name="name" placeholder="" id="name"
+                                      th:value="${name}">
+                        </p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>Trạng thái: <select class="form-select" name="status">
+                            <option selected value=""></option>
+                            <option th:selected="${status == 1}" value="1">Đang hoạt đông
+                            </option>
+                            <option value="0" th:selected="${status == 0}">Dừng hoạt động
+                            </option>
+                        </select></p>
+                    </div>
+                    <div class="col-lg-2 mt-4">
+                        <button type="submit" class="btn btn-dark" style="font-size: 1.2em;">Tìm kiếm
+                        </button>
+                    </div>
+
+                    <div class="col-lg-3 mt-4">
+                        <button type="button" class="btn btn-dark" style="font-size: 1.2em;" data-bs-toggle="modal"
+                                data-bs-target="#createService">
+                            Thêm dịch vụ
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+            </form>
+            <div th:if="${success != null and success != ''}" th:class="alert alert-success" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> <span th:text="${success}"></span>
+            </div>
+
+            <table class="table table-striped table-hover border align-baseline text-start shadow">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Chi tiết dịch vụ</th>
+                    <th scope="col">Giá(VND)</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Chi tiết</th>
+                    <th scope="col">Chỉnh sửa</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:with="totalCount=${#lists.size(viewServiceDTOList)}">
+                </th:block>
+                <tr th:each="view, count : ${viewServiceDTOList}">
+                    <th scope="row" th:text="${count.count + (currentPage * pageSize)}">
+                    </th>
+                    <td th:text="${view.getRoomService().getServiceName()}"></td>
+                    <td th:text="${view.getRoomService().getServiceDes()}">
+                    </td>
+                    <td class="ps-4"
+                        th:text="${#numbers.formatDecimal(view.getRoomService().getServicePrice(), 0, 'COMMA', 0, 'POINT')}">
+
+                    </td>
+                    <td th:text="${view.roomService.status == true ? 'Đang hoạt động' : 'Dừng hoạt động'}">
+                    </td>
+
+
+                    <td>
+                        <button type="button" class="btn button btn-dark" data-bs-toggle="modal"
+                                th:data-bs-target="'#viewService_' + ${count.count}">
+                            Chi tiết
+                        </button>
+
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn button btn-dark" data-bs-toggle="modal"
+                                th:data-bs-target="'#updateService_' + ${count.count}">
+                            Chỉnh sửa
+                        </button>
+
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+            </div>
+        </div>
+        <nav class="mt-3" th:if="${totalPages > 1}" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a class="page-link"
+                       th:href="@{/saleManager/viewService(page=0, name=${name}, status=${status})}">&laquo;&laquo;</a>
+                </li>
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a class="page-link"
+                       th:href="@{/saleManager/viewService(page=${currentPage - 1}, name=${name}, status=${status})}">&laquo;</a>
+                </li>
+
+                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:class="${pageNumber == currentPage} ? 'page-item active' : 'page-item'">
+                    <a class="page-link"
+                       th:href="@{/saleManager/viewService(page=${pageNumber}, name=${name}, status=${status})}"
+                       th:text="${pageNumber + 1}"></a>
+                </li>
+                <div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+                </div>
+
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link"
+                       th:href="@{/saleManager/viewService(page=${currentPage + 1}, name=${name}, status=${status})}">&raquo;</a>
+                </li>
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link"
+                       th:href="@{/saleManager/viewService(page=${totalPages - 1}, name=${name}, status=${status})}">&raquo;&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<!-- Modal create-->
+<div class="modal fade" id="createService" tabindex="-1" aria-hidden="true">
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="createServiceLabel">Thêm
+                    dịch vụ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="row">
+                            <p class="fw-bold text-start">Ảnh:</p>
+
+                            <input class="form-control" type="file" name="serviceImage" id="formFile1"
+                                   onchange="preview1()">
+                            <div style="color: red" id="preview1"></div>
+                        </div>
+                        <img id="frame1" src="" class="img-fluid mt-3 w-50"/>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Tên dịch
+                                vụ:
+                                <input class="form-control w-75" id="service_name1" name="serviceName" type="text">
+                                <span class="error-message" id="serviceNameError1" style="color: red"></span>
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Giá tiền:
+                                <input type="input" id="service_price1" name="servicePrice"
+                                       class="form-control w-75">
+                                <span class="error-message" style="color: red" id="servicePriceError1"></span>
+
+                            </p>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Trạng thái
+                                hoạt động:
+                                <select class="form-select w-75" id="status1" name="status">
+                                    <option th:each="statusOption : ${#numbers.sequence(0, 1)}"
+                                            th:value="${statusOption}"
+                                            th:text="${statusOption == 1 ? 'Đang hoạt động' : 'Dừng hoạt động'}">
+                                    </option>
+                                </select>
+
+
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <p class="fw-bold text-start">Mô tả:
+                            <textarea class="form-control" rows="5" name="serviceDes" id="serviceDes1"></textarea>
+                        </p>
+
+                        <span class="error-message" style="color: red" id="serviceDesError1"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                    </button>
+                    <button type="button" id="addService" th:onclick="addService()"
+                            class="btn button btn-dark ms-5">
+                        Thêm mới
+                    </button>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<th:block th:each="view, count : ${viewServiceDTOList}">
+    <!-- Modal view -->
+    <div class="modal fade" th:id="'viewService_' + ${count.count}" tabindex="-1" aria-hidden="true">
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="viewServiceLabel">Chi tiết
+                        dịch vụ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div>
+                            <p class="fw-bold text-start">Ảnh:</p>
+                            <img th:src="@{'/assets/img/services/' + ${view.getRoomService().getServiceImage()}}"
+                                 class="w-50" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Tên
+                                dịch
+                                vụ: <input class="form-control w-75" type="text"
+                                           th:value="${view.getRoomService().getServiceName()}" readonly>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Giá tiền:
+                                <input type="input"
+                                       th:value="${#numbers.formatDecimal(view.getRoomService().getServicePrice(), 0, 'COMMA', 0, 'POINT')}"
+                                       class="form-control w-75" readonly>
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Trạng thái
+                                hoạt động:
+                                <input type="input"
+                                       th:value="${view.roomService.status == true ? 'Đang hoạt động' : 'Dừng hoạt động'}"
+                                       class="form-control w-75" readonly>
+                            </p>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <p class="fw-bold text-start">Mô tả:
+                            <textarea class="form-control" th:text="${view.getRoomService().getServiceDes()}"
+                                      id="exampleFormControlTextarea1" rows="5" readonly></textarea>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal update -->
+    <div class="modal fade" th:id="'updateService_' + ${count.count}" tabindex="-1" aria-hidden="true">
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="updateServiceLabel">Cập nhật
+                        dịch vụ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="row">
+                            <p class="fw-bold text-start">Ảnh:</p>
+
+                            <input class="form-control" type="file" name="serviceImage"
+                                   th:id="'formFile_' + ${view.getRoomService().getServiceId()}" onchange="preview()">
+                            <div style="color: red" th:id="'preview_' + ${view.getRoomService().getServiceId()}">
+                            </div>
+                        </div>
+                        <img id="frame" src="" class="img-fluid mt-3 w-50"/>
+
+
+                    </div>
+                    <div class="row">
+                        <input type="hidden" class="serviceId" name="serviceId"
+                               th:id="'serviceId_' + ${view.getRoomService().getServiceId()}"
+                               th:value="${view.getRoomService().getServiceId()}">
+
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Tên dịch
+                                vụ:
+                                <input class="form-control w-75"
+                                       th:id="'serviceName_' + ${view.getRoomService().getServiceId()}"
+                                       name="serviceName" type="text"
+                                       th:value="${view.getRoomService().getServiceName()}">
+                                <span class="error-message"
+                                      th:id="'serviceNameError_' + ${view.getRoomService().getServiceId()}"
+                                      style="color: red"></span>
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Giá tiền:
+                                <input type="input" name="servicePrice"
+                                       th:id="'servicePrice_' + ${view.getRoomService().getServiceId()}"
+                                       th:value="${view.getRoomService().getServicePrice().intValue()}"
+                                       class="form-control w-75">
+                                <span class="error-message" style="color: red"
+                                      th:id="'servicePriceError_'+${view.getRoomService().getServiceId()}"></span>
+
+                            </p>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="fw-bold text-start">Trạng thái
+                                hoạt động:
+                                <select class="form-select w-75"
+                                        th:id="'status_' + ${view.getRoomService().getServiceId()}" name="status">
+                                    <option th:value="true" th:selected="${view.getRoomService().getStatus()}">
+                                        Đang hoạt động
+                                    </option>
+                                    <option th:value="false" th:selected="${!view.getRoomService().getStatus()}">
+                                        Dừng hoạt động
+                                    </option>
+                                </select>
+
+
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <p class="fw-bold text-start">Mô tả:
+                            <textarea class="form-control"
+                                      th:id="'serviceDes_' + ${view.getRoomService().getServiceId()}"
+                                      th:text="${view.getRoomService().getServiceDes()}" rows="5"></textarea>
+                        </p>
+
+
+                        <span class="error-message" style="color: red"
+                              th:id="'serviceDesError_' + ${view.getRoomService().getServiceId()}"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                    </button>
+                    <button type="submit" id="updateService" class="btn button btn-dark ms-5"
+                            th:data-bs-target="'#updateService_' + ${count.count}"
+                            th:onclick="'updateServiceFields(' + ${view.getRoomService().getServiceId()} + ')'">
+                        Cập nhật
+                    </button>
+
+
+                </div>
+                <!--                                                        </form>-->
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<script th:inline="javascript">
+
+
+    function updateServiceFields(count) {
+
+        var fileInput = document.getElementById('formFile_' + count);
+        var preview = document.getElementById('preview_' + count);
+
+
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var allowedTypes = ['image/jpeg', 'image/png'];
+
+            if (!allowedTypes.includes(file.type)) {
+                preview.innerHTML = 'Chỉ chấp nhận file ảnh (JPEG, PNG)';
+                return;
+            }
+        } else {
+            preview.innerHTML = '';
+        }
+
+        // Construct the userId using the count
+        const serviceId = document.getElementById('serviceId_' + count).value;
+        const serviceName = document.getElementById('serviceName_' + count).value;
+        const servicePrice = document.getElementById('servicePrice_' + count).value;
+        const status = document.getElementById('status_' + count).value;
+        const serviceDes = document.getElementById('serviceDes_' + count).value;
+
+        var serviceNameError = document.getElementById('serviceNameError_' + count);
+        var servicePriceError = document.getElementById('servicePriceError_' + count);
+        var serviceDesError = document.getElementById('serviceDesError_' + count);
+
+
+        var nameRegex = /^[\p{L}\s]+$/u;
+        if (serviceName === '') {
+            serviceNameError.textContent = 'Tên dịch vụ không được để trống.';
+            return;
+        }
+        if (!nameRegex.test(serviceName)) {
+            serviceNameError.textContent = 'Tên không hợp lệ';
+            return;
+        } else if (serviceName.length < 6 || serviceName.length > 33) {
+            serviceNameError.textContent = 'Độ dài của tên dịch vụ phải từ 6 đến 33 kí tự.';
+            return;
+        } else {
+            serviceNameError.textContent = '';
+        }
+
+        if (servicePrice === '') {
+            servicePriceError.textContent = 'Giá tiền không được để trống.';
+            return;
+        } else if (!/^\d+$/.test(servicePrice)) {
+            servicePriceError.textContent = 'Giá tiền không hợp lệ';
+            return;
+        } else if (servicePrice.length > 10 || servicePrice.length < 6) {
+            servicePriceError.textContent = 'Giá tiền phải chứa từ 6 đến 13 chữ số.';
+            return;
+        } else {
+            servicePriceError.textContent = '';
+        }
+
+        if (serviceDes.trim() !== '') {
+            if (serviceDes.length < 10 || serviceDes.length > 2000) {
+                document.getElementById('serviceDesError1').innerText = 'Độ dài phải từ 10 đến 2000 kí tự.';
+                return;
+            }
+        }
+        var formData = new FormData();
+        formData.append('serviceId', serviceId);
+        formData.append('serviceName', serviceName);
+        formData.append('servicePrice', servicePrice);
+        formData.append('serviceDes', serviceDes);
+        formData.append('status', status);
+        formData.append('serviceImage', fileInput.files[0]);
+
+        const url = '/saleManager/updateRoomService';
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.message === "Cập nhật dịch vụ thành công") {
+
+                    var toastData = {
+                        title: "Thành công!",
+                        message: "Cập nhật dịch vụ thành công.",
+                        type: "success",
+                        duration: 5000,
+                    };
+                    localStorage.setItem('toastData', JSON.stringify(toastData));
+                    setTimeout(function () {
+                        window.location.href = `/saleManager/viewService`;
+                    }, 100);
+
+                } else {
+                    var errorToastData = {
+                        title: "Lỗi!",
+                        message: (data && data.error ? data.error : (data && data.exceptionMessage ? data.exceptionMessage : 'Lỗi khi cập nhật.')),
+                        type: "error",
+                        duration: 5000,
+                    };
+                    toastNotificationCountdown(
+                        errorToastData.title,
+                        errorToastData.message,
+                        errorToastData.type,
+                        errorToastData.duration
+                    );
+                }
+            })
+            .catch(error => {
+
+                var errorToastData = {
+                    title: "Lỗi!",
+                    message: error,
+                    type: "error",
+                    duration: 5000,
+                };
+                toastNotificationCountdown(
+                    errorToastData.title,
+                    errorToastData.message,
+                    errorToastData.type,
+                    errorToastData.duration
+                );
+            });
+
+    }
+
+
+</script>
+<script src="/assets/js/saleManager.js"></script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+</html>

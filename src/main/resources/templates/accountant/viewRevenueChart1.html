@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế toán</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="...">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <link rel="stylesheet" href="/assets/css/checkInReceptionist.css">
+    <script src="/assets/js/chart.js"></script>
+    <script src="/assets/js/main.js"></script>
+</head>
+
+<body>
+
+<body data-bs-target=".navbar" data-bs-offset="100"></body>
+
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+        <ul class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Kế toán</p>
+            <li th:class="${activePage == '/accounting/viewRevenue'} ? 'active'">
+                <a th:href="@{/accounting/viewRevenue}"><i class="bi bi-currency-exchange pe-1"></i>Doanh thu</a>
+            </li>
+            <li th:class="${activePage == '/accounting/viewPayment'} ? 'active'">
+                <a th:href="@{/accounting/viewPayment}"><i class="bi bi-list-columns-reverse pe-1"></i>Lịch sử giao
+                    dịch</a>
+            </li>
+            <li th:class="${activePage == '/accounting/listConfirmRefund'} ? 'active'">
+                <a th:href="@{/accounting/listConfirmRefund}"><i class="bi bi-arrow-return-left pe-1"></i>Hoàn
+                    tiền</a>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul>
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a>
+                        </li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content px-3 py-2">
+            <input type="hidden" id="checkIn" th:value="${revenueDTO.getRoomCheckIn()}">
+            <input type="hidden" id="checkOut" th:value="${revenueDTO.getRoomCheckOut()}">
+            <input type="hidden" id="cancel" th:value="${revenueDTO.getRoomCheckOut()}">
+            <input type="hidden" id="occupancyPercentage"
+                   th:value="${revenueDTO.getRoomStatusTodayDTO().getOccupancyPercentage()}">
+            <input type="hidden" id="vacancyPercentage"
+                   th:value="${revenueDTO.getRoomStatusTodayDTO().getVacancyPercentage()}">
+
+
+            <div class="container-fluid">
+                <div class="mb-3">
+                    <h3 class="ms-3 mb-3 mt-2 fw-bold"> Thống kê doanh thu</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h4 class="fw-bold ms-4">Tỉ lệ lấp đầy phòng</h4>
+                            <th:block th:if="${revenueDTO.getRoomStatusTodayDTO()!=null}">
+                                <canvas id="doughnutChart2" class="ms-2"
+                                        style="width:100%;max-width:300px"></canvas>
+                            </th:block>
+                            <th:block th:if="${revenueDTO.getRoomStatusTodayDTO()==null}">
+                                <span>Chưa có thống kê trong ngày hôm nay</span>
+                            </th:block>
+                        </div>
+                        <div class="col-lg-9">
+                            <form th:method="POST" th:action="@{/accounting/viewRevenue}"
+                                  onsubmit="return validateForm()">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h4 class="fw-bold ms-5">Doanh thu</h4>
+                                    </div>
+                                    <div class="col-lg-2 ">
+                                        <div class="form-group has-search">
+                                            <input type="text" name="year" id="year" th:value="${year}"
+                                                   class="form-control"
+                                                   placeholder="">
+                                        </div>
+                                        <div id="yearError" class="text-danger"></div>
+                                    </div>
+                                    <div class="col-lg-2 ">
+                                        <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <canvas id="barChart" class="ms-5" style="width:100%;max-width:800px"></canvas>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="row mt-5">
+                            <h4 class="fw-bold">Thống kê hạng phòng hôm nay</h4>
+                            <div class="d-flex flex-column">
+                                <table
+                                        class="table table-striped table-hover border align-baseline text-center shadow">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Loại phòng</th>
+                                        <th scope="col">Phòng Đã đặt</th>
+                                        <th scope="col">Phòng Trống</th>
+                                        <th scope="col">Phòng Đang sử dụng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item, it : ${revenueDTO.getCategories()}">
+                                        <th scope="row" th:text="${it.count}">1</th>
+                                        <td th:text="${item.getRoomCategories().getRoomCategoryName()}">Phòng đơn</td>
+                                        <td th:text="${item.getBooked()}">0</td>
+                                        <td th:text="${item.getEmpty()}">4</td>
+                                        <td th:text="${item.getUsing()}">0</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function validateForm() {
+        var yearInput = document.getElementById('year').value;
+        var yearError = document.getElementById('yearError');
+        var yearRegex = /^\d{4}$/; // Kiểm tra xem năm có 4 chữ số hay không
+        if (!yearRegex.test(yearInput)) {
+            yearError.innerText = 'Nhập năm đúng định dạng (4 chữ số)';
+            return false;
+        } else {
+            yearError.innerText = '';
+        }
+
+        return true; // Cho phép form được submit nếu năm hợp lệ
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var xValues = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+
+        /*<![CDATA[*/
+        var revenueArray = /*[[${revenueDTO.getRevenue()}]]*/ [];
+
+        var yValues = [];
+        for (var i = 0; i < revenueArray.length; i++) {
+            var value = parseFloat(revenueArray[i]);
+            yValues.push(value);
+        }
+
+
+        for (var i = 0; i < 12; i++) {
+            yValues.push(0);
+        }
+        /*]]>*/
+
+
+        var barColors = ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray"];
+
+        new Chart("barChart", {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: {display: false},
+                title: {
+                    display: true,
+                    text: "Doanh thu theo tháng"
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 50000000000000,
+                            callback: function (value, index, values) {
+                                if (index % 13 === 0) {
+
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+</html>

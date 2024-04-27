@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <!-- Custom File's Link -->
+    <link rel="stylesheet" href="assets/css/homepage.css"/>
+    <link rel="stylesheet" href="assets/css/homepage-responsive-style.css">
+</head>
+<body>
+<div class="container booking-area" th:fragment="searchRoom" style="margin-bottom: 100px">
+    <form class="row" th:action="@{/room/search}" method="Get">
+        <div class="col-lg mb-3 ">
+            <h6>Ngày nhận phòng</h6>
+            <input type="date" name="checkIn" class="form-control" placeholder="Date" id="checkInDate"
+                   th:value="${session.defaultDate}" required>
+
+        </div>
+        <div class="col-lg mb-3 ">
+            <h6>Ngày trả phòng</h6>
+            <input type="date" name="checkOut" class="form-control" placeholder="Date" id="checkOutDate"
+                   th:value="${session.defaultDate1}" required>
+        </div>
+        <div class="col-lg mb-3">
+            <h6>Số người</h6>
+            <select name="numberOfPeople" class="form-select">
+                <option selected value="">-----</option>
+                <option value="1" th:selected="${session.numberOfPeople == 1}">1</option>
+                <option value="2" th:selected="${session.numberOfPeople == 2}">2</option>
+                <option value="3" th:selected="${session.numberOfPeople == 3}">3</option>
+                <option value="4" th:selected="${session.numberOfPeople == 4}">4</option>
+                <option value="5" th:selected="${session.numberOfPeople == 5}">5</option>
+            </select>
+        </div>
+        <div class="col-lg mb-3">
+            <h6></h6>
+            <button type="submit" class="main-btn rounded-2 px-lg-3 mt-3">Tìm Phòng</button>
+        </div>
+
+        <!-- Thêm các trường ẩn để lưu trữ các giá trị -->
+        <input type="hidden" id="checkIn" th:value="${session.defaultDate}">
+        <input type="hidden" id="checkOut" th:value="${session.defaultDate1}">
+        <input type="hidden" id="numberOfPeople" th:value="${session.numberOfPeople}">
+
+    </form>
+
+
+</div>
+
+
+<script src="/assets/js/searchRoom.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.min.css">
+</head>
+<body>
+<div class="carousel" data-flickity>
+    <div class="carousel-cell" th:each="row : ${rows}">
+        <div class="calendar-row">
+            <div class="calendar-price" th:each="dateInfo : ${row}">
+                <p class="ps-2" th:text="${dateInfo.get(i).getDate()}"></p>
+                <!-- Hiển thị thông tin giá phòng -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
+<script>
+    var flkty = new Flickity('.carousel', {
+        cellAlign: 'left',
+        contain: true,
+        wrapAround: true,
+        groupCells: 1
+    });
+</script>
+</body>
+</html>

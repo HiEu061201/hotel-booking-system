@@ -1,0 +1,27 @@
+.box-head{
+    text-align: center;
+}
+
+h3{
+    padding-top: 20px;
+}
+
+.h7{
+	text-align: justify;
+	color: grey;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+a {
+  color: #CC8C18;
+  font-size: 15px;
+}
+
+.wrapper{
+	padding-top: 120px;
+}

@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+/* Toast Container */
+#toast {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    z-index: 999999;
+}
+
+/* Toast Element */
+.toast {
+    background: #fff;
+    width: 300px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Toast Title */
+.toast-header {
+    padding: 10px;
+    background: #fff; /* Change the header background color */
+    color: black;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-size: large;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.toast-body {
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+}
+
+/* Toast Process Bar */
+.progress {
+    height: 4px;
+    margin: 10px 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Different Toast Types */
+.bg-success .toast-header {
+    background: #fff !important; /* Change success toast header background */
+}
+
+.bg-danger .toast-header {
+    background: #fff !important; /* Change error toast header background */
+}
+
+.bg-info .toast-header {
+    background: #fff !important; /* Change info toast header background */
+}
+
+/* Text Color for Toasts */
+.text-white {
+    color: #fff !important;
+}
+
+/* Toast Element */
+.toast {
+    /* ... */
+    position: relative; /* Để căn chỉnh icon */
+}
+
+/* Toast Icons */
+.toast-header .fa {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    font-size: 20px;
+}
+
+/* Icon colors for different toast types */
+.toast-header .fa-success {
+    color: #28a745; /* Màu cho success */
+}
+
+.toast-header .fa-danger {
+    color: #dc3545; /* Màu cho danger */
+}
+
+.toast-header .fa-info {
+    color: #17a2b8; /* Màu cho info */
+}

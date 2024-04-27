@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
+    <title>Tìm phòng</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <!-- Custom File's Link -->
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header-footer-style.css">
+    <link rel="stylesheet" href="/assets/css/searchRoomCustomer.css">
+    <link rel="stylesheet" href="/assets/css/homepage.css">
+    <link rel="stylesheet" href="/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700&display=swap" rel="stylesheet">
+
+</head>
+
+<body data-bs-target=".navbar" data-bs-offset="100">
+<header th:replace="~{header :: header}">
+
+</header>
+
+<button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<div id="toast"></div>
+<div class="site-blocks-cover overlay" style="background-image: url(/assets/img/news/background2.jpg);"
+     data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 text-center" data-aos="fade">
+                <h1 class="mb-4">Tìm Phòng</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container booking-area" th:replace="~{searchRoom :: searchRoom}">
+
+</div>
+
+<!--<div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">-->
+<!--    <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>-->
+<!--</div>-->
+
+
+<form method="get" th:action="@{/room/addBooking}" onsubmit="return validateDates()">
+
+
+    <div class="row">
+        <div class="col-lg-10">
+            <section class="room-section spad">
+                <div class="container">
+                    <div class="rooms-page-item"
+                         th:each="addedCategories : ${conflictingBookings.getRoomCategories()}">
+
+                        <div class="row">
+                            <div class="col-lg-4 mt-3">
+                                <div class="room-pic-slider owl-carousel">
+                                    <div class="single-room-pic">
+                                        <img th:src="@{'/assets/img/rooms/' + ${addedCategories.getImage()}}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <h2 th:value="${addedCategories.getRoomCategoryName()}"></h2>
+                                        <input name="RoomCategoryId" hidden id="RoomCategoryId"
+                                               th:value="${addedCategories.getRoomCategoryId()}">
+                                    </div>
+                                    <div class="room-desc">
+                                        <p th:value="${addedCategories.getDescription()}"></p>
+                                    </div>
+
+                                    <div class="room-features"
+                                    >
+
+                                        <th:block
+                                                th:each="roomFurniture : ${conflictingBookings.getRoomFurnitures()}">
+                                            <div class="room-info"
+                                                 th:if="${roomFurniture.getFurnitureName() == 'Bàn làm việc'}">
+                                                <img src="/assets/img/services/workspace.png" width="30px">
+                                                <span th:text="${roomFurniture.getFurnitureName()}">TV</span>
+                                            </div>
+
+                                            <div class="room-info"
+                                                 th:if="${roomFurniture.getFurnitureName() == 'Tủ lạnh mini'}">
+                                                <img src="/assets/img/services/tissue.png" width="30px">
+                                                <span th:text="${roomFurniture.getFurnitureName()}">Wi-Fi</span>
+                                            </div>
+
+                                            <div class="room-info"
+                                                 th:if="${roomFurniture.getFurnitureName() == 'Điều hòa nhiệt độ'}">
+                                                <img src="/assets/img/services/hand-dryer.png" width="30px">
+                                                <span th:text="${roomFurniture.getFurnitureName()}">Điều hòa</span>
+                                            </div>
+
+                                            <div class="room-info"
+                                                 th:if="${roomFurniture.getFurnitureName() == 'Bồn tắm'}">
+                                                <img src="/assets/img/services/sink.png" width="30px">
+                                                <span th:text="${roomFurniture.getFurnitureName()}">Bàn trang điểm</span>
+                                            </div>
+
+                                            <div class="room-info"
+                                                 th:if="${roomFurniture.getFurnitureName() == 'Bàn trang điểm'}">
+                                                <img src="/assets/img/services/canned-food.png" width="30px">
+                                                <span th:text="${roomFurniture.getFurnitureName()}">Bàn trang điểm</span>
+                                            </div>
+
+
+                                        </th:block>
+                                    </div>
+
+
+                                    <div class="room-features">
+                                        <div class="room-info">
+                                            <span></span>
+                                        </div>
+                                        <div class="room-info">
+												<span
+                                                        th:text="${'Kích thước phòng: ' +addedCategories.getSquare()+'m2'}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <h4 th:text="${addedCategories.getRoomCategoryName()}"></h4>
+                                        <div class="room-desc2">
+                                            <p class="title_offer">Ưu đãi khách sạn</p>
+                                            <p>Hủy phòng linh hoạt</p>
+                                            <p>Bao gồm bữa sáng</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <p><span th:text="${addedCategories.getNumberPerson()}"></span> người <i
+                                        class="fa-solid fa-user"></i></p>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <div class="flex-container"
+                                             th:each="crp : ${conflictingBookings.getCategoryRoomPrices()}">
+                                            <div
+                                                    th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                                <p>Từ
+                                                <h2
+                                                        th:text="${#numbers.formatDecimal(crp.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                </h2>
+                                                <sub>/đêm</sub> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3"><p> Số phòng còn trống:</p>
+                                <select class="form-select w-75"
+                                        th:id="'room-count_' + ${addedCategories.getRoomCategoryId()}"
+                                        name="selectedRoomCategory"
+                                        th:onchange="'calculateTotalRoomCount(' +${addedCategories.getRoomCategoryId()}+ ')'">
+                                    <th:block th:each="entry : ${conflictingBookings.getTotalRoom()}">
+                                        <th:block th:if="${entry.key == addedCategories.roomCategoryId}">
+                                            <th:with th:with="rroomCount=${#lists.size(entry.value)}">
+                                                <option th:each="i : ${#numbers.sequence(0, rroomCount)}"
+                                                        th:value="${i}" th:utext="${i}">
+                                                </option>
+                                            </th:with>
+                                        </th:block>
+                                    </th:block>
+                                </select>
+
+
+                                <br>
+                                <button th:onclick="'showCal('+${addedCategories.getRoomCategoryId()}+')'"
+                                        class="main-btn" style="font-size:15px">Lịch giá
+                                    phòng
+                                    <i class="fa fa-calendar"></i></button>
+                            </div>
+                        </div>
+                        <div class="row" th:each="crp : ${conflictingBookings.getCategoryRoomPrices()}">
+                            <div class="col-lg-4"
+                                 th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <div class="room-desc2">
+                                            <p class="fs-6">Giá phòng ngày thường: <a
+                                                    th:id="'dayPrice_' + ${addedCategories.getRoomCategoryId()}"
+                                                    th:text="${#numbers.formatDecimal(crp.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4"
+                                 th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <div class="room-desc2">
+                                            <p class="fs-6">Giá phòng ngày cuối tuần: <a class="text-warning"
+                                                                                         th:id="'weekendPrice_' + ${addedCategories.getRoomCategoryId()}"
+                                                                                         th:text="${#numbers.formatDecimal(crp.getPrice()*1.5, 0, 'COMMA', 0, 'POINT') + ' VND'}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4"
+                                 th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                <div class="room-text">
+                                    <div class="room-title">
+                                        <div class="room-desc2">
+                                            <p class="fs-6">Giá phòng ngày lễ - Tết: <a class="text-danger"
+                                                                                        th:id="'holidayPrice_' + ${addedCategories.getRoomCategoryId()}"
+                                                                                        th:text="${#numbers.formatDecimal(crp.getPrice()*3, 0, 'COMMA', 0, 'POINT') + ' VND'}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3"></div>
+
+                        <div th:id="'carouselExampleControls_' + ${addedCategories.getRoomCategoryId()}"
+                             class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item" th:each="page,iterStat : ${carouselPages}"
+                                     th:classappend="${iterStat.index == 0} ? 'active'">
+                                    <div class="row">
+                                        <div class="col" th:each="dateInfo : ${page}">
+                                            <div class="calendar-price" th:if="${dateInfo.getDayType() == 1}">
+                                                <p class="ps-2" th:text="${dateInfo.getDate()}"></p>
+                                                <div th:each="crp : ${conflictingBookings.getCategoryRoomPrices()}">
+                                                    <div
+                                                            th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                                        <p
+                                                                th:text="${#numbers.formatDecimal(crp.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="calendar-price" th:if="${dateInfo.getDayType() == 2}">
+                                                <p class="ps-2" th:text="${dateInfo.getDate()}"></p>
+                                                <div th:each="crp : ${conflictingBookings.getCategoryRoomPrices()}">
+                                                    <div
+                                                            th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                                        <p
+                                                                th:text="${#numbers.formatDecimal(crp.getPrice() * 1.5, 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                        </p>
+                                                        <p class="text-decoration-line-through text-warning"
+                                                           th:text="${#numbers.formatDecimal(crp.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="calendar-price" th:if="${dateInfo.getDayType() == 3}">
+                                                <p class="ps-2" th:text="${dateInfo.getDate()}"></p>
+                                                <div th:each="crp : ${conflictingBookings.getCategoryRoomPrices()}">
+                                                    <div
+                                                            th:if="${crp.getRoomCategoryId() == addedCategories.getRoomCategoryId()}">
+                                                        <p
+                                                                th:text="${#numbers.formatDecimal(crp.getPrice() * 3, 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                        </p>
+                                                        <p class="text-decoration-line-through text-warning"
+                                                           th:text="${#numbers.formatDecimal(crp.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}">
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    th:data-bs-target="'#carouselExampleControls_' + ${addedCategories.getRoomCategoryId()}"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    th:data-bs-target="'#carouselExampleControls_' + ${addedCategories.getRoomCategoryId()}"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+
+        <div class="col-lg-2">
+            <section class="room-section spad sticky-section">
+                <div class="book-btn">
+                    <p id="selectedRooms">0 phòng</p>
+                    <p class="night-count" id="numberOfNights">cho 0 đêm</p>
+                </div>
+                <input type="submit" class="main-btn mt-2" id="submitForm" value="Đặt Ngay"></input>
+            </section>
+        </div>
+
+    </div>
+
+</form>
+
+<!-- Contact section -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4 bg-cover"
+                             style="background-image: url(/assets/img/contact3.png); min-height: 300px;">
+                        </div>
+                        <div class="col-lg-8">
+                            <form id="feedback-form" class="row p-lg-5 gy-4">
+                                <div class="col-12">
+                                    <h3>Liên lạc với chúng tôi</h3>
+                                    <p>Để biết thêm chi tiết về khách sạn Hà Nội 3HKT, bao gồm
+                                        giá phòng, hội thảo, các ưu đãi nghỉ dưỡng và ẩm thực
+                                        hay góp ý với chúng tôi, quý khách vui lòng để lại
+                                        thông tin, đội ngũ nhân viên Kinh Doanh sẽ liên hệ với bạn
+                                        trong thời gian sớm nhất.</p>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="title" class="form-label">Tiêu đề</label>
+                                    <input type="text" class="form-control" id="title" maxlength="100"
+                                           name="title" placeholder="Tiêu đề">
+                                    <div id="title-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="name@example.com">
+                                    <div id="email-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="content" class="form-label"> Nội dung </label>
+                                    <textarea id="content" name="content" cols="30" rows="5"
+                                              class="form-control" minlength="10" maxlength="2000"
+                                              placeholder="Viết ở đây..."></textarea>
+                                    <div id="content-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" id="submit-feedback"
+                                            class="btn btn-warning">Gửi yêu cầu
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-warning"
+                                            data-bs-dismiss="modal">Hủy
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <script>
+                            // Sử dụng JavaScript để gửi yêu cầu POST khi nút "Gửi yêu cầu" được bấm
+                            document.getElementById("submit-feedback").addEventListener("click", function () {
+                                var title = document.getElementById("title").value;
+                                var email = document.getElementById("email").value;
+                                var content = document.getElementById("content").value;
+                                //title validate
+                                var titleValidationMsg = document.getElementById("title-validation-msg");
+
+                                if (title.length == 0) {
+                                    titleValidationMsg.textContent = "Tiêu đề không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    titleValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                // email validate
+                                var emailValidationMsg = document.getElementById("email-validation-msg");
+                                var emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+                                if (email.length == 0) {
+                                    emailValidationMsg.textContent = "Email không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else if (!emailRegex.test(email)) {
+                                    emailValidationMsg.textContent = "Email phải có định dạng example@gmail.com.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    emailValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                //content validate
+                                var contentValidationMsg = document.getElementById("content-validation-msg");
+
+                                if (content.length < 10) {
+                                    contentValidationMsg.textContent = "Nội dung phải có ít nhất 10 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else if (content.length > 2000) {
+                                    contentValidationMsg.textContent = "Nội dung không được vượt quá 2000 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    contentValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+
+                                var data = {
+                                    title: title,
+                                    email: email,
+                                    content: content
+                                };
+
+                                fetch("/feedback/save", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(data)
+                                })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! Status: ${response.status}`);
+                                        }
+                                        return response.text();  // Use response.text() for plain text
+                                    })
+                                    .then(message => {
+                                        // Display the message from the server
+                                        alert(message);
+                                        window.location.reload();  // Optionally reload the page
+                                    })
+                                    .catch(error => {
+                                        // Handle errors here
+                                        console.error("Error:", error);
+                                        alert("Có lỗi xảy ra khi gửi feedback. Hãy thử lại.");
+                                    });
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section th:replace="~{footer :: footer}"></section>
+
+<script th:inline="javascript">
+
+
+    const checkUser = /*[[${checkUser}]]*/ null;
+
+
+    var isUserAuthenticated = /*[[${isUserAuthenticated}]]*/ false;
+
+    function validateDates() {
+        // Get the values of check-in and check-out dates
+        var checkInDate = new Date(document.getElementById('checkInDate').value);
+        var checkOutDate = new Date(document.getElementById('checkOutDate').value);
+
+        // Perform the validation
+        if (checkInDate >= checkOutDate) {
+            var errorToastData = {
+                title: "Lỗi!",
+                message: 'Ngày trả phòng phải sau ngày nhận phòng ',
+                type: "error",
+                duration: 5000,
+            };
+            toastNotificationCountdown(
+                errorToastData.title,
+                errorToastData.message,
+                errorToastData.type,
+                errorToastData.duration
+            );
+            return false;
+        }
+
+
+        if (checkUser == null && isUserAuthenticated == false) {
+            var errorToastData = {
+                title: "Lỗi!",
+                message: 'Hãy đặt phòng với tư cách là khách hàng',
+                type: "error",
+                duration: 5000,
+            };
+            toastNotificationCountdown(
+                errorToastData.title,
+                errorToastData.message,
+                errorToastData.type,
+                errorToastData.duration
+            );
+            return false;
+        }
+
+
+        // If validation passes, allow form submission
+        return true;
+    }
+
+    // Function to format a number with commas as thousands separator
+    function formatNumber(number) {
+        return number.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+    }
+
+    // Function to format currency with commas and no decimal places
+    function formatCurrency(amount) {
+        return amount.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
+    var display = 0;
+
+
+    var totalCount = 0;
+    var roomCounts = {};
+
+    function calculateTotalRoomCount(count) {
+        var roomCountInput = document.getElementById('room-count_' + count);
+        var currentCount = parseInt(roomCountInput.value, 10);
+
+        // Check if the current count is the same as the previous one for this room
+        if (roomCounts[count] === undefined || currentCount !== roomCounts[count]) {
+            // Update the count for this room
+            roomCounts[count] = currentCount;
+
+            // Recalculate the total count based on all rooms
+            totalCount = Object.values(roomCounts).reduce((sum, count) => sum + count, 0);
+
+            // Calculate and update the total cost for weekend and holiday
+
+
+            // Update the display
+            document.getElementById('selectedRooms').innerText = totalCount + ' phòng';
+            // document.getElementById('totalPrice').innerText = totalWeekendPrice;
+        }
+    }
+
+    function showCal(count) {
+        var div = document.getElementById('carouselExampleControls_' + count);
+
+        var totalCount = 0;
+
+        var selectedRoomCount = parseInt(document.getElementById('room-count_' + count).value);
+
+        totalCount += selectedRoomCount;
+
+
+        document.getElementById("selectedRooms").innerText = totalCount + " phòng";
+
+
+        if (display == 1) {
+            div.style.display = 'block';
+            display = 0;
+            event.preventDefault();
+        } else {
+            div.style.display = 'none';
+            display = 1;
+            event.preventDefault();
+        }
+    }
+
+
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = /*[[${error}]]*/ '';
+
+    if (errorMessage !== null && errorMessage.trim() !== '') {
+        var errorToastData = {
+            title: "Lỗi!",
+            message: errorMessage,
+            type: "error",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            errorToastData.title,
+            errorToastData.message,
+            errorToastData.type,
+            errorToastData.duration
+        );
+    }
+    /*]]>*/
+</script>
+
+<!-- Bootstrap 5 JS CDN Links -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Custom Js Link -->
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/aos.js"></script>
+<script src="/assets/js/searchRoom.js"></script>
+</body>

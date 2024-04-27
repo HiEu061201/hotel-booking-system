@@ -1,0 +1,18 @@
+package fu.hbs;
+
+import fu.hbs.service.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class APIController {
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/api/users")
+    public ResponseEntity<?> getUsers() {
+        return userService.getListUser();
+    }
+}

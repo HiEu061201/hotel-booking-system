@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ 3HKT Hotel</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <!-- Custom File's Link -->
+    <link rel="stylesheet" href="assets/css/homepage.css"/>
+    <link rel="stylesheet" href="assets/css/homepage-responsive-style.css">
+    <link rel="stylesheet" href="assets/css/header-footer.css">
+    <link rel="stylesheet" href="assets/css/header_footer_style.css">
+
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
+<div id="toast"></div>
+<!-- Navbar section -->
+<header th:replace="~{header :: header}">
+
+</header>
+
+<button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+<!-- Navbar section exit -->
+<!-- Banner section -->
+<section id="home" class="banner_wrapper p-0">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background-image: url(/assets/img/slider/hotel_slider1.jpg);">
+                <div class="slide-caption text-center">
+                    <div>
+                        <h1>Chào mừng đến với khách sạn 3HKT Hà Nội</h1>
+                        <p>Trải nghiệm không gian lưu trú hoàn hảo </p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background-image: url(/assets/img/slider/hotel_slider2.jpg);">
+                <div class="slide-caption text-center">
+                    <div>
+                        <h1>Chào mừng đến với khách sạn 3HKT Hà Nội</h1>
+                        <p>Trải nghiệm không gian lưu trú hoàn hảo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="container booking-area" th:replace="~{searchRoom :: searchRoom}">
+
+    </div>
+
+</section>
+<!-- Banner section exit -->
+<!-- About section -->
+<section id="about" class="about_wrapper">
+    <div class="container">
+        <div class="row flex-lg-row flex-column-reverse ">
+            <div class="col-lg-6 text-center text-lg-start">
+                <h3>Chào mừng tới khách sạn <span> 3HKT <br class="d-none d-lg-block">
+							Thiên đường</span> của sự nghỉ ngơi</h3>
+                <p>Khách sạn 3HKT Hà Nội là khách sạn Quốc tế tại Hà Nội với 222 phòng nghỉ tiện nghi, hiện đại và
+                    sang trọng.
+                    Đặc biệt, với vị trí trung tâm thuận lợi kề bên Hồ Giảng Võ yên bình, khách sạn là điểm dừng
+                    chân lý tưởng của du khách trong và ngoài nước mỗi khi có chuyến công tác hay du lịch cùng bạn
+                    bè và người thân.
+                </p>
+                <p>Hơn nữa, Khách sạn 3HKT Hà Nội đã được nổi danh là địa chỉ đứng đầu của Hà nội về ẩm thực Việt
+                    Nam cùng các dịch vụ giải trí hoàn hảo và phong phú.
+                    Đến với Khách sạn 3HKT Hà Nội, chúng tôi hy vọng sẽ đem lại cho quý khách những trải nghiệm thú
+                    vị và hài lòng nhất.</p>
+            </div>
+            <div class="col-lg-6 mb-4 mb-lg-0 ps-lg-4 text-center">
+                <img decoding="async" src="./assets/img/about-img.svg" class="img-fluid" alt="About Us">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- About section exit -->
+<!-- Room section -->
+<section id="rooms" class="rooms_wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 section-title text-center mb-5">
+                <h6>Chúng tôi có thể giúp gì cho bạn?</h6>
+                <h3>Những loại phòng được ưa thích của chúng tôi</h3>
+            </div>
+        </div>
+        <div class="row m-0">
+            <div class="col-md-4 mb-4 mb-lg-0" th:each="category, iteration : ${session.categories}">
+                <div class="room-item" th:if="${iteration.index < 3}">
+                    <img decoding="async" th:src="@{'/assets/img/rooms/' + ${category.image}}" class="img-fluid">
+                    <div class="room-item-wrap">
+                        <div class="room-content">
+                            <h5 class="text-white mb-lg-5 text-decoration-underline"
+                                th:text="${category.roomCategoryName}"></h5>
+                            <p class="text-white" th:text="${category.description}"></p>
+                            <p class="text-white fw-bold mt-lg-4"
+                               th:text="${#numbers.formatDecimal(category.getCategoryRoomPrice().getPrice(), 0, 'COMMA', 0, 'POINT' )+' VND'}">
+                            </p>
+                            <a class="main-btn border-white text-white mt-lg-5"
+                               th:href="@{'/room/category/' + ${category.roomCategoryId}}">Xem ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Room section exit -->
+<!-- Services section -->
+<section id="services" class="services_wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 section-title text-center mb-5">
+                <h6>Chúng tôi ở đây để giúp bạn</h6>
+                <h3>Các dịch vụ tuyệt vời của chúng tôi</h3>
+            </div>
+        </div>
+        <div class="row align-items-center service-item-wrap">
+            <div class="col-lg-7 p-lg-0">
+                <!--Service Area Start-->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="spa" role="tabpanel">
+                        <img decoding="async" src="../assets/img/services/service1.webp" alt="">
+                    </div>
+                    <div class="tab-pane fade" id="restaurent" role="tabpanel">
+                        <img decoding="async" src="../assets/img/services/service2.webp" alt="">
+                    </div>
+                    <div class="tab-pane fade" id="swimming" role="tabpanel">
+                        <img decoding="async" src="../assets/img/services/service3.webp" alt="">
+                    </div>
+                    <div class="tab-pane fade" id="conference" role="tabpanel">
+                        <img decoding="async" src="../assets/img/services/service6.webp" alt="">
+                    </div>
+                </div>
+            </div>
+            <!--Service Area End-->
+            <section class="col-lg-5 position-relative">
+                <!--Service Tab Menu Area Start-->
+                <div class="service-menu-area">
+                    <ul class="nav">
+                        <li>
+                            <a data-bs-toggle="tab" href="#spa" class="active">
+									<span class="service-icon">
+										<img decoding="async" src="../assets/img/services/service-icon1.webp" alt="">
+									</span>
+                                <h5>Spa, làm đẹp & Sức khỏe</h5>
+                                <p><span>3HKT Spa</span> sẽ mang đến cho Quý khách cảm giác thư giãn sau những ngày
+                                    làm việc
+                                    căng thẳng với không gian tiện nghi, hiện đại cùng những dịch vụ tốt nhất.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tab" href="#restaurent">
+									<span class="service-icon">
+										<img decoding="async" src="../assets/img/services/service-icon2.webp" alt="">
+									</span>
+                                <h5>Nhà hàng</h5>
+                                <p><span>Nhà hàng của 3HKT</span> là nơi quý khách sẽ được thưởng thức sự phong phú
+                                    của các món ăn tuyệt hảo và các loại rượu quý hiếm.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tab" href="#swimming">
+									<span class="service-icon">
+										<img decoding="async" src="../assets/img/services/service-icon3.webp" alt="">
+									</span>
+                                <h5>Bể bơi</h5>
+                                <p><span>Bể bơi của 3HKT</span> tọa lạc tại tầng 5 của khách sạn là nơi bạn có thể
+                                    xua tan cái nóng của mùa hè,
+                                    tận hưởng cảm giác đắm mình trong làn nước xanh mát hay đơn giản chỉ là thư giãn
+                                    sau một ngày làm việc mệt mỏi. </p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tab" href="#conference">
+									<span class="service-icon">
+										<img decoding="async" src="../assets/img/services/service-icon4.webp" alt="">
+									</span>
+                                <h5>Hội trường</h5>
+                                <p><span>Hội trường của 3HKT</span> là nơi tổ chức những cuộc họp lớn, hội thảo quan
+                                    trọng và cũng là nơi thích hợp với những cuộc thuyết trình, thảo luận nhóm. </p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Services section exit -->
+            <!-- Gallery section -->
+            <section id="gallery" class="gallery_wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 section-title text-center mb-5">
+                            <h6>Những bức ảnh đẹp nhất của khách sạn</h6>
+                            <h3>Hình ảnh Khách sạn</h3>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-lg-3 col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/1.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/2.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/3.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/4.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                        <div class="col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/5.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                        <div class="col-md-6 gallery-item">
+                            <img decoding="async" src="../assets/img/gallery/6.webp" class="img-fluid w-100">
+                            <div class="gallery-item-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Gallery Section Exit -->
+            <!-- News section -->
+            <section id="blog" class="blog_wrapper pb-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 section-title text-center mb-5">
+                            <h6>Xin chào tới khách hàng của chúng tôi</h6>
+                            <h3>Tin tức</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card p-0 border-0 rounded-0">
+                                <img decoding="async" src="../assets/img/news/news1.jpg" alt="">
+                                <div class="blog-content bg-white p-4">
+                                    <h5 class="text-decoration-underline mb-4">AFTERNOON & HIGH TEA</h5>
+                                    <h6>By Admin - October 10, 2023</h6>
+                                    <p class="mt-2">Hightea là sự kết hợp giữa trà chiều và Bữa tối, được phục vụ
+                                        trên một chiếc bàn cao trong phòng ăn.
+                                        Nó còn gọi là bữa bữa trà mặn.
+                                    </p>
+                                    <a href="/news" class="main-btn mt-2">Đọc thêm</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card p-0 border-0 rounded-0">
+                                <img decoding="async" src="../assets/img/news/news2.png" alt="">
+                                <div class="blog-content bg-white p-4">
+                                    <h5 class="text-decoration-underline mb-4">MOONLIGHT SYMPHONY – BỘ SƯU TẬP BÁNH
+                                        TRUNG THU</h5>
+                                    <h6>By Admin - September 30, 2023</h6>
+                                    <p class="mt-2"> Bộ sưu tập bánh trung thu 2023 của Khách sạn 3HKT Hà Nội mang
+                                        trọn vẹn tinh hoa của ẩm thực truyền thống và hơi thở của cuộc sống đương
+                                        đại.
+                                    </p>
+                                    <a href="/news" class="main-btn mt-2">Đọc thêm</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="our-partner-slider mt-5">
+                    <div class="container swiper our-partner">
+                        <div class=" swiper-wrapper">
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand1.webp"></div>
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand2.webp"></div>
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand3.webp"></div>
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand4.webp"></div>
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand5.webp"></div>
+                            <div class="swiper-slide"><img decoding="async"
+                                                           src="../assets/img/partners/brand6.webp"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- News section exit -->
+            <!-- Contact section -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-4 bg-cover"
+                                         style="background-image: url(/assets/img/contact3.png); min-height: 300px;">
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <form id="feedback-form" class="row p-lg-5 gy-4">
+                                            <div class="col-12">
+                                                <h3>Liên lạc với chúng tôi</h3>
+                                                <p>Để biết thêm chi tiết về khách sạn Hà Nội 3HKT, bao gồm
+                                                    giá phòng, hội thảo, các ưu đãi nghỉ dưỡng và ẩm thực
+                                                    hay góp ý với chúng tôi, quý khách vui lòng để lại
+                                                    thông tin, đội ngũ nhân viên Kinh Doanh sẽ liên hệ với bạn
+                                                    trong thời gian sớm nhất.</p>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label for="title" class="form-label">Tiêu đề</label>
+                                                <input type="text" class="form-control" id="title" maxlength="100"
+                                                       name="title" placeholder="Tiêu đề">
+                                                <div id="title-validation-msg" class="text-danger"></div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                       placeholder="name@example.com">
+                                                <div id="email-validation-msg" class="text-danger"></div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="content" class="form-label"> Nội dung </label>
+                                                <textarea id="content" name="content" cols="30" rows="5"
+                                                          class="form-control" minlength="10" maxlength="2000"
+                                                          placeholder="Viết ở đây..."></textarea>
+                                                <div id="content-validation-msg" class="text-danger"></div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <button type="button" id="submit-feedback"
+                                                        class="btn btn-warning">Gửi yêu cầu
+                                                </button>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <button type="button" class="btn btn-warning"
+                                                        data-bs-dismiss="modal">Hủy
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <script>
+                                        // Sử dụng JavaScript để gửi yêu cầu POST khi nút "Gửi yêu cầu" được bấm
+                                        document.getElementById("submit-feedback").addEventListener("click", function () {
+                                            var title = document.getElementById("title").value;
+                                            var email = document.getElementById("email").value;
+                                            var content = document.getElementById("content").value;
+                                            //title validate
+                                            var titleValidationMsg = document.getElementById("title-validation-msg");
+
+                                            if (title.length == 0) {
+                                                titleValidationMsg.textContent = "Tiêu đề không được để trống";
+                                                return; // Prevent the form from being submitted
+                                            } else {
+                                                titleValidationMsg.textContent = ""; // Clear any previous error message
+                                            }
+                                            // email validate
+                                            var emailValidationMsg = document.getElementById("email-validation-msg");
+                                            var emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+                                            if (email.length == 0) {
+                                                emailValidationMsg.textContent = "Email không được để trống";
+                                                return; // Prevent the form from being submitted
+                                            } else if (!emailRegex.test(email)) {
+                                                emailValidationMsg.textContent = "Email phải có định dạng example@gmail.com.";
+                                                return; // Prevent the form from being submitted
+                                            } else {
+                                                emailValidationMsg.textContent = ""; // Clear any previous error message
+                                            }
+                                            //content validate
+                                            var contentValidationMsg = document.getElementById("content-validation-msg");
+
+                                            if (content.length < 10) {
+                                                contentValidationMsg.textContent = "Nội dung phải có ít nhất 10 ký tự.";
+                                                return; // Prevent the form from being submitted
+                                            } else if (content.length > 2000) {
+                                                contentValidationMsg.textContent = "Nội dung không được vượt quá 2000 ký tự.";
+                                                return; // Prevent the form from being submitted
+                                            } else {
+                                                contentValidationMsg.textContent = ""; // Clear any previous error message
+                                            }
+
+                                            var data = {
+                                                title: title,
+                                                email: email,
+                                                content: content
+                                            };
+
+                                            fetch("/feedback/save", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json"
+                                                },
+                                                body: JSON.stringify(data)
+                                            })
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                                    }
+                                                    return response.text();  // Use response.text() for plain text
+                                                })
+                                                .then(message => {
+                                                    // Display the message from the server
+                                                    alert(message);
+                                                    window.location.reload();  // Optionally reload the page
+                                                })
+                                                .catch(error => {
+                                                    // Handle errors here
+                                                    console.error("Error:", error);
+                                                    alert("Có lỗi xảy ra khi gửi feedback. Hãy thử lại.");
+                                                });
+                                        });
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer section -->
+<section th:replace="~{footer :: footer}"></section>
+<!-- Bootstrap 5 JS CDN Links -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Custom Js Link -->
+<script src="assets/js/main.js"></script>
+
+<script src="/assets/js/searchRoom.js"></script>
+
+
+</body>
+
+
+</html>

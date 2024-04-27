@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật hồ sơ người dùng</title>
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="">
+
+    <!-- Bootstrap5 CND Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <link rel="stylesheet" href="/assets/css/viewProfileCustomer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+
+    <!-- Include Bootstrap-datepicker CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <!-- Include Bootstrap-datepicker JS -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Include Bootstrap-datepicker localization for Vietnamese -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body data-bs-target=".navbar" data-bs-offset="100">
+<div id="toast"></div>
+<script th:inline="javascript" type="text/javascript">
+    var user = /*[[${user}]]*/[];
+    var isCustomer = /*[[${isCustomer}]]*/[];
+    var isAdmin = /*[[${isAdmin}]]*/[];
+    var isManagement = /*[[${isManagement}]]*/[];
+    var isReceptionist = /*[[${isReceptionist}]]*/[];
+    var isAccountant = /*[[${isAccountant}]]*/[];
+    var isSaleManager = /*[[${isSaleManager}]]*/[];
+
+</script>
+<div th:if="${isCustomer}" class="wrapper">
+    <header th:replace="~{header :: header}"></header>
+    <div class="container light-style flex-grow-1 container-p-y ">
+        <h4 class="font-weight-bold py-3 mb-2">
+            Hồ sơ người dùng
+        </h4>
+        <div th:if="${param.changeSuccess}">
+            <div class="alert alert-success" style="margin-top: 15px;">
+                Cập nhật thành công
+            </div>
+        </div>
+
+
+        <div th:if="${param.FailsFile}">
+            <div class="alert alert-danger" style="margin-top: 15px;">
+                Cập nhật ảnh lỗi
+            </div>
+        </div>
+        <form method="post" th:object="${user}" th:action="@{/updateprofile}" id="submitForm"
+              onsubmit="return validateForm()" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="userId" th:field="*{userId}"><br>
+            <div class="card overflow-hidden">
+                <div class="row no-gutters row-bordered row-border-light">
+                    <div class="col-md-3 pt-0">
+                        <div class="list-group list-group-flush account-settings-links">
+                            <a class="list-group-item list-group-item-action active" data-toggle="list"
+                               href="#account-general">Chung</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list"
+                               href="#account-info">Thông tin thêm</a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="account-general">
+                                <div th:if=" ${user.image != null and user.image != ''}">
+                                    <div class="card-body media align-items-center">
+                                        <img th:src="@{'/assets/img/' + ${user.image}}" alt class="d-block ui-w-80">
+                                        <div class="media-body ml-4">
+                                            <label class="btn btn-outline-primary">
+                                                Tải ảnh lên
+                                                <input type="file" name="file" id="formFile1"
+                                                       style="display: none;">
+                                            </label> &nbsp;
+                                            <div style="color: red" id="preview1_userImage"></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if=" ${user.image == null || user.image == ''}">
+                                    <div class="card-body media align-items-center">
+                                        <img th:src="@{'/assets/img/Special.png'}" alt class="d-block ui-w-80">
+                                        <div class="media-body ml-4">
+                                            <label class="btn btn-outline-primary">
+                                                Tải ảnh lên
+                                                <input type="file" name="file" id="formFile2"
+                                                       style="display: none;">
+                                            </label> &nbsp;
+                                            <div style="color: red" id="preview1_defaultImage"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <hr class="border-light ml-3">
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="form-label">Tên tài khoản</label>
+                                        <input type="text" class="form-control mb-1" id="name" name="name"
+                                               th:field="*{name}" maxlength="50" required>
+                                        <br>
+                                        <div th:if="${#fields.hasErrors('name')}" class="error" th:errors="*{name}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">E-mail</label>
+                                        <input type="email" class="form-control mb-1" id="email" name="email"
+                                               th:field="*{email}" readonly required>
+                                        <div th:if="${#fields.hasErrors('email')}" class="error"
+                                             th:errors="*{email}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" required
+                                               th:field="*{phone}">
+                                        <div th:if="${#fields.hasErrors('phone')}" class="error"
+                                             th:errors="*{phone}">
+                                        </div>
+                                        <div class="error" th:text="${errorMessage}"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="account-info">
+                                <div class="card-body pb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" name="dob"
+                                               th:field="*{dob}" id="dobInput"
+                                               placeholder="Date" maxlength="8">
+                                        <div>
+                                        </div>
+                                        <div id="dob-error1" style="color: red">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Giới tính</label>
+                                        <select class="custom-select" id="gender" name="gender"
+                                                th:field="*{gender}">
+                                            <option value="Nam" th:selected="${gender == 'Name'}">Nam</option>
+                                            <option value="Nữ" th:selected="${gender == 'Nữ'}">Nữ</option>
+                                            <option value="Khác" th:selected="${gender == 'Khác'}">Khác</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr class="border-light m-0">
+                                <div class="card-body pb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Địa chỉ</label>
+                                        <input type="text" class="form-control" id="address" name="address" min="10"
+                                               maxlength="100"
+                                               th:field="*{address}"><br>
+                                        <div th:if="${#fields.hasErrors('address')}" class="error"
+                                             th:errors="*{address}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="container_swap">
+                    <div class="div_left">
+                        <input type="submit" id="submit-button" class="btn_fix" value=" Lưu lại ">
+                    </div>
+                    <div class="div_right">
+                        <input type="reset" class="btn_fix" value=" Mặc định">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- Contact section -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4 bg-cover"
+                             style="background-image: url(../assets/img/contact3.png); min-height: 300px;">
+                        </div>
+                        <div class="col-lg-8">
+                            <form id="feedback-form" class="row p-lg-5 gy-4">
+                                <div class="col-12">
+                                    <h3>Liên lạc với chúng tôi</h3>
+                                    <p>Để biết thêm chi tiết về khách sạn Hà Nội 3HKT, bao gồm
+                                        giá phòng, hội thảo, các ưu đãi nghỉ dưỡng và ẩm thực
+                                        hay góp ý với chúng tôi, quý khách vui lòng để lại
+                                        thông tin, đội ngũ nhân viên Kinh Doanh sẽ liên hệ với bạn
+                                        trong thời gian sớm nhất.</p>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="title" class="form-label">Tiêu đề</label>
+                                    <input type="text" class="form-control" id="title1" maxlength="100" name="title"
+                                           placeholder="Tiêu đề">
+                                    <div id="title-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email1" name="email"
+                                           placeholder="name@example.com">
+                                    <div id="email-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="content" class="form-label"> Nội dung </label>
+                                    <textarea id="content1" name="content" cols="30" rows="5" class="form-control"
+                                              minlength="10" maxlength="2000" placeholder="Viết ở đây..."></textarea>
+                                    <div id="content-validation-msg" class="text-danger"></div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" id="submit-feedback" class="btn btn-warning">Gửi yêu cầu
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Hủy
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <script>
+                            // Sử dụng JavaScript để gửi yêu cầu POST khi nút "Gửi yêu cầu" được bấm
+                            document.getElementById("submit-feedback").addEventListener("click", function () {
+                                var title = document.getElementById("title1").value;
+                                var email = document.getElementById("email1").value;
+                                var content = document.getElementById("content1").value;
+                                //title validate
+                                var titleValidationMsg = document.getElementById("title-validation-msg");
+
+                                if (title.length == 0) {
+                                    titleValidationMsg.textContent = "Tiêu đề không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    titleValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                // email validate
+                                var emailValidationMsg = document.getElementById("email-validation-msg");
+                                var emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+                                if (email.length == 0) {
+                                    emailValidationMsg.textContent = "Email không được để trống";
+                                    return; // Prevent the form from being submitted
+                                } else if (!emailRegex.test(email)) {
+                                    emailValidationMsg.textContent = "Email phải có định dạng example@gmail.com.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    emailValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+                                //content validate
+                                var contentValidationMsg = document.getElementById("content-validation-msg");
+
+                                if (content.length < 10) {
+                                    contentValidationMsg.textContent = "Nội dung phải có ít nhất 10 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else if (content.length > 2000) {
+                                    contentValidationMsg.textContent = "Nội dung không được vượt quá 2000 ký tự.";
+                                    return; // Prevent the form from being submitted
+                                } else {
+                                    contentValidationMsg.textContent = ""; // Clear any previous error message
+                                }
+
+                                var data = {
+                                    title: title,
+                                    email: email,
+                                    content: content
+                                };
+
+                                fetch("/feedback/save", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(data)
+                                })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! Status: ${response.status}`);
+                                        }
+                                        return response.text();  // Use response.text() for plain text
+                                    })
+                                    .then(message => {
+                                        // Display the message from the server
+                                        alert(message);
+                                        window.location.reload();  // Optionally reload the page
+                                    })
+                                    .catch(error => {
+                                        // Handle errors here
+                                        console.error("Error:", error);
+                                        alert("Có lỗi xảy ra khi gửi feedback. Hãy thử lại.");
+                                    });
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${!isCustomer}" class="wrapper" style="padding-top: 0px;">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+        <ul th:if="${isReceptionist}" class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-2"></i>Lễ tân</p>
+            <li>
+                <a href="/receptionist/createRoomReceptionist"><i class="fa-solid fa-check-double pe-2"></i>Đặt
+                    phòng</a>
+            </li>
+            <li>
+                <a href="/receptionist/listRoomInUse"><i class="fa-solid fa-house-user pe-2"></i>Phòng đang sử
+                    dụng</a>
+            </li>
+            <li>
+                <a href="/receptionist/listBookingReceptionist"><i class="fa-solid fa-bell pe-2"></i>Đặt trước</a>
+            </li>
+            <li>
+                <a href="/receptionist/listHistoryBooking"><i class="fa-solid fa-clipboard pe-2"></i>Lịch sử đặt
+                    phòng</a>
+            </li>
+        </ul>
+
+        <ul th:if="${isSaleManager}" class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Quản lý kinh doanh</p>
+            <li th:class="${activePage == '/saleManager/viewService'} ? 'active'">
+                <a href="/saleManager/viewService"><i class="bi bi-list-task pe-1"></i>Danh sách dịch vụ</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/viewListNews'} ? 'active'">
+                <a href="/saleManager/viewListNews"><i class="bi bi-list-columns-reverse pe-1"></i>Danh sách tin
+                    tức</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listHistoryBooking'} ? 'active'">
+                <a href="/saleManager/listHistoryBooking"><i class="bi bi-list-nested pe-1"></i>Danh sách đặt
+                    phòng</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/viewListContact'} ? 'active'">
+                <a href="/saleManager/viewListContact"><i class="bi bi-telephone pe-1"></i>Liên hệ</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listFeedback'} ? 'active'">
+                <a href="/saleManager/listFeedback"><i class="bi bi-arrow-return-left pe-1"></i>Phản hồi</a>
+            </li>
+            <li th:class="${activePage == '/saleManager/listRefund'} ? 'active'">
+                <a href="/saleManager/listRefund"><i class="bi bi-arrow-return-left pe-1"></i>Yêu cầu hoàn tiền</a>
+            </li>
+        </ul>
+
+        <ul th:if="${isAccountant}" class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Kế toán</p>
+            <li th:class="${activePage == '/accounting/viewRevenue'} ? 'active'">
+                <a th:href="@{/accounting/viewRevenue}"><i class="bi bi-currency-exchange pe-1"></i>Doanh thu</a>
+            </li>
+            <li th:class="${activePage == '/accounting/viewPayment'} ? 'active'">
+                <a th:href="@{/accounting/viewPayment}"><i class="bi bi-list-columns-reverse pe-1"></i>Lịch sử giao
+                    dịch</a>
+            </li>
+            <li th:class="${activePage == '/accounting/listConfirmRefund'} ? 'active'">
+                <a th:href="@{/accounting/listConfirmRefund}"><i class="bi bi-arrow-return-left pe-1"></i>Hoàn
+                    tiền</a>
+            </li>
+        </ul>
+
+        <ul th:if="${isManagement}" class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-1"></i>Quản lí Phòng</p>
+            <li th:class="${activePage == '/management/viewRoom'} ? 'active'">
+                <a th:href="@{/management/viewRoom}"><i class="bi bi-currency-exchange pe-1"></i>Phòng</a>
+            </li>
+            <li th:class="${activePage == '/management/viewRoomType'} ? 'active'">
+                <a th:href="@{/management/viewRoomType }"><i class="bi bi-list-columns-reverse pe-1"></i>Loại phòng</a>
+            </li>
+            <li th:class="${activePage == '/management/viewRoomCatgoryPrice'} ? 'active'">
+                <a th:href="@{/management/viewRoomCatgoryPrice}"><i class="bi bi-arrow-return-left pe-1"></i>Giá
+                    tiền</a>
+            </li>
+        </ul>
+
+        <ul th:if="${isAdmin}" class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-2"></i>Admin</p>
+            <li th:class="${activePage == '/admin/viewListUser'} ? 'active'">
+                <a href="/admin/viewListUser"><i class="fa-regular fa-rectangle-list pe-2"></i>Danh sách người
+                    dùng</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav th:if="${!isCustomer}" class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul style="list-style-type: none;">
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a></li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container light-style flex-grow-1 container-p-y ">
+            <h4 class="font-weight-bold py-3 mb-2">
+                Hồ sơ người dùng
+            </h4>
+            <div th:if="${param.changeSuccess}">
+                <div class="alert alert-success" style="margin-top: 15px;">
+                    Cập nhật thành công
+                </div>
+            </div>
+
+
+            <div th:if="${param.FailsFile}">
+                <div class="alert alert-danger" style="margin-top: 15px;">
+                    Cập nhật ảnh lỗi
+                </div>
+            </div>
+            <form method="post" th:object="${user}" th:action="@{/updateprofile}" id="submitForm2"
+                  onsubmit="return validateForm()" enctype="multipart/form-data">
+                <input type="hidden" id="id2" name="userId" th:field="*{userId}"><br>
+                <div class="card overflow-hidden">
+                    <div class="row no-gutters row-bordered row-border-light">
+                        <div class="col-md-3 pt-0">
+                            <div class="list-group list-group-flush account-settings-links">
+                                <a class="list-group-item list-group-item-action active" data-toggle="list"
+                                   href="#account-general2">Chung</a>
+                                <a class="list-group-item list-group-item-action" data-toggle="list"
+                                   href="#account-info2">Thông tin thêm</a>
+
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="account-general2">
+                                    <div th:if=" ${user.image != null and user.image != ''}">
+                                        <div class="card-body media align-items-center">
+                                            <img th:src="@{'/assets/img/' + ${user.image}}" alt class="d-block ui-w-80">
+                                            <div class="media-body ml-4">
+                                                <label class="btn btn-outline-primary">
+                                                    Tải ảnh lên
+                                                    <input type="file" name="file" id="formFile12"
+                                                           style="display: none;">
+                                                </label> &nbsp;
+                                                <div style="color: red" id="preview1_userImage2"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:if=" ${user.image == null || user.image == ''}">
+                                        <div class="card-body media align-items-center">
+                                            <img th:src="@{'/assets/img/Special.png'}" alt class="d-block ui-w-80">
+                                            <div class="media-body ml-4">
+                                                <label class="btn btn-outline-primary">
+                                                    Tải ảnh lên
+                                                    <input type="file" name="file" id="formFile22"
+                                                           style="display: none;">
+                                                </label> &nbsp;
+                                                <div style="color: red" id="preview1_defaultImage2"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr class="border-light ml-3">
+
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label class="form-label">Tên tài khoản</label>
+                                            <input type="text" class="form-control mb-1" id="name2" name="name"
+                                                   th:field="*{name}" maxlength="50" required>
+                                            <br>
+                                            <div th:if="${#fields.hasErrors('name')}" class="error" th:errors="*{name}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">E-mail</label>
+                                            <input type="email" class="form-control mb-1" id="email2" name="email"
+                                                   th:field="*{email}" readonly required>
+                                            <div th:if="${#fields.hasErrors('email')}" class="error"
+                                                 th:errors="*{email}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Số điện thoại</label>
+                                            <input type="text" class="form-control" id="phone2" name="phone" required
+                                                   th:field="*{phone}">
+                                            <div th:if="${#fields.hasErrors('phone')}" class="error"
+                                                 th:errors="*{phone}">
+                                            </div>
+                                            <div class="error" th:text="${errorMessage}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="account-info2">
+                                    <div class="card-body pb-2">
+                                        <div class="form-group">
+                                            <label class="form-label">Ngày sinh</label>
+                                            <input type="date" class="form-control" name="dob"
+                                                   th:field="*{dob}" id="dobInput2"
+                                                   placeholder="Date" maxlength="8">
+                                            <div>
+                                            </div>
+                                            <div id="dob-error12" style="color: red">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Giới tính</label>
+                                            <select class="custom-select" id="gender2" name="gender"
+                                                    th:field="*{gender}">
+                                                <option value="Nam" th:selected="${gender == 'Name'}">Nam</option>
+                                                <option value="Nữ" th:selected="${gender == 'Nữ'}">Nữ</option>
+                                                <option value="Khác" th:selected="${gender == 'Khác'}">Khác</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr class="border-light m-0">
+                                    <div class="card-body pb-2">
+                                        <div class="form-group">
+                                            <label class="form-label">Địa chỉ</label>
+                                            <input type="text" class="form-control" id="address2" name="address"
+                                                   min="10"
+                                                   maxlength="100"
+                                                   th:field="*{address}"><br>
+                                            <div th:if="${#fields.hasErrors('address')}" class="error"
+                                                 th:errors="*{address}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container_swap">
+                        <div class="div_left">
+                            <input type="submit" id="submit-button2" class="btn_fix" value=" Lưu lại ">
+                        </div>
+                        <div class="div_right">
+                            <input type="reset" class="btn_fix" value=" Mặc định">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div th:if="${isCustomer}">
+    <section th:replace="~{footer :: footer}"></section>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+</script>
+<!-- Bootstrap 5 JS CDN Links -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Custom Js Link -->
+<script src="/assets/js/main.js"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+        // Gắn sự kiện submit cho form
+        document.getElementById('submitForm').addEventListener('submit', function (event) {
+            // Ngăn chặn việc submit mặc định của form
+            event.preventDefault();
+
+            // Gọi hàm validateForm để kiểm tra và hiển thị lỗi nếu cần
+            if (validateForm()) {
+                // Nếu hàm validateForm() trả về true, tức là không có lỗi, thì submit form
+                this.submit();
+            }
+        });
+        // Gắn sự kiện submit cho form2
+        document.getElementById('submitForm2').addEventListener('submit', function (event) {
+            // Ngăn chặn việc submit mặc định của form
+            event.preventDefault();
+
+            // Gọi hàm validateForm để kiểm tra và hiển thị lỗi nếu cần
+            if (validateForm2()) {
+                // Nếu hàm validateForm() trả về true, tức là không có lỗi, thì submit form
+                this.submit();
+            }
+        });
+    });
+
+    function validateForm() {
+
+        var fileInput1 = document.getElementById('formFile1');
+        var fileInput2 = document.getElementById('formFile2');
+        var preview;
+
+        // Check if a file is selected in fileInput1
+        if (fileInput1 && fileInput1.files.length > 0) {
+            var file = fileInput1.files[0];
+
+            // Choose the appropriate preview based on the condition
+            preview = document.getElementById('preview1_userImage');
+
+            // Clear any previous error message
+            preview.innerText = '';
+
+            // Check the file type
+            var allowedTypes = ['image/jpeg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                // Display an error message
+                preview.innerText = 'Chỉ chấp nhận file ảnh (JPEG, PNG)';
+                return false;
+            }
+        }
+
+        // Check if a file is selected in fileInput2
+        if (fileInput2 && fileInput2.files.length > 0) {
+            var file = fileInput2.files[0];
+
+
+            preview = document.getElementById('preview1_defaultImage');
+
+
+            preview.innerText = '';
+
+            // Check the file type
+            var allowedTypes = ['image/jpeg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                // Display an error message
+                preview.innerText = 'Chỉ chấp nhận file ảnh (JPEG, PNG)';
+                return false;
+            }
+        }
+        var dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+        var dobInput = document.getElementById('dobInput').value.trim();
+
+        if (dobInput !== '') {
+            document.getElementById('dob-error1').innerText = '';
+
+            if (!dateFormat.test(dobInput)) {
+                document.getElementById('dob-error1').innerText = 'Vui lòng nhập ngày đúng định dạng (dd-MM-yyyy)';
+                return false;
+            }
+
+            var userDate = new Date(dobInput);
+            var currentDate = new Date();
+            var calendar1 = new Date(1900, 0, 1);
+
+            // Tính toán ngày 18 năm trước
+            var eighteenYearsAgo = new Date(currentDate);
+            eighteenYearsAgo.setFullYear(currentDate.getFullYear() - 18);
+
+            if (userDate.getTime() < calendar1.getTime()) {
+                document.getElementById('dob-error1').innerText = 'Ngày sinh không thể trước năm 1900';
+                return false;
+            }
+
+            if (userDate.getTime() > eighteenYearsAgo.getTime()) {
+                document.getElementById('dob-error1').innerText = 'Bạn chưa đủ 18 tuổi';
+                return false;
+            }
+
+            return true;
+        }
+
+        return true;
+
+
+    }
+
+    function validateForm2() {
+
+        var fileInput12 = document.getElementById('formFile12');
+        var fileInput22 = document.getElementById('formFile22');
+        var preview;
+
+        // Check if a file is selected in fileInput1
+        if (fileInput12 && fileInput12.files.length > 0) {
+            var file = fileInput12.files[0];
+
+            // Choose the appropriate preview based on the condition
+            preview = document.getElementById('preview1_userImage2');
+
+            // Clear any previous error message
+            preview.innerText = '';
+
+            // Check the file type
+            var allowedTypes = ['image/jpeg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                // Display an error message
+                preview.innerText = 'Chỉ chấp nhận file ảnh (JPEG, PNG)';
+                return false;
+            }
+        }
+
+        // Check if a file is selected in fileInput2
+        if (fileInput22 && fileInput22.files.length > 0) {
+            var file = fileInput22.files[0];
+
+
+            preview = document.getElementById('preview1_defaultImage2');
+
+
+            preview.innerText = '';
+
+            // Check the file type
+            var allowedTypes = ['image/jpeg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                // Display an error message
+                preview.innerText = 'Chỉ chấp nhận file ảnh (JPEG, PNG)';
+                return false;
+            }
+        }
+        var dateFormat2 = /^\d{4}-\d{2}-\d{2}$/;
+        var dobInput2 = document.getElementById('dobInput2').value.trim();
+
+        if (dobInput2 !== '') {
+            document.getElementById('dob-error12').innerText = '';
+
+            if (!dateFormat2.test(dobInput2)) {
+                document.getElementById('dob-error12').innerText = 'Vui lòng nhập ngày đúng định dạng (dd-MM-yyyy)';
+                return false;
+            }
+
+            var userDate2 = new Date(dobInput2);
+            var currentDate2 = new Date();
+            var calendar12 = new Date(1900, 0, 1);
+
+            // Tính toán ngày 18 năm trước
+            var eighteenYearsAgo = new Date(currentDate2);
+            eighteenYearsAgo.setFullYear(currentDate2.getFullYear() - 18);
+
+            if (userDate2.getTime() < calendar12.getTime()) {
+                document.getElementById('dob-error12').innerText = 'Ngày sinh không thể trước năm 1900';
+                return false;
+            }
+
+            if (userDate2.getTime() > eighteenYearsAgo.getTime()) {
+                document.getElementById('dob-error12').innerText = 'Bạn chưa đủ 18 tuổi';
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+
+
+    }
+
+</script>
+<script th:inline="javascript">
+    /* Truyền giá trị từ Thymeleaf vào JavaScript */
+    var pass2Message = /*[[${sucsses}]]*/ '';
+    if (pass2Message != null) {
+        var toastData = {
+            title: "Thành công!",
+            message: pass2Message,
+            type: "success",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            toastData.title,
+            toastData.message,
+            toastData.type,
+            toastData.duration
+        );
+    }
+    var pass2Message = /*[[${false}]]*/ '';
+    if (pass2Message != null && pass2Message.trim()) {
+        var errorToastData = {
+            title: "Lỗi!",
+            message: pass2Message,
+            type: "error",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            errorToastData.title,
+            errorToastData.message,
+            errorToastData.type,
+            errorToastData.duration
+        );
+    }
+
+
+</script>
+</body>
+
+</html>

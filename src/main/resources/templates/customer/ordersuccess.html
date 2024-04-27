@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/customer.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Thanh toán thành công</title>
+</head>
+
+<body>
+<!-- back to top -->
+
+<!-- start body -->
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 d-flex justify-content-center align-items-center">
+                            <div class="text-center">
+                                <img src="/assets/img/Orilogo.png" class="img-fluid "
+                                     style="max-width: 100px; max-height: 100px;">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Thêm lớp "my-4" để tạo ra khoảng cách trên và dưới tiêu đề trang -->
+                    <h2 class="mb-3 text-success text-center">Thanh toán thành công<i class="bi bi-check-circle-fill"
+                                                                                      style="font-size: 2rem;"></i></h2>
+                    <!-- Sử dụng lớp "alert" và "alert-danger" để tạo ra thông báo lỗi -->
+                    <h4 class="my-2">Chi tiết đơn hàng</h4>
+                    <!-- Sử dụng lớp "table" và "table-bordered" để tạo ra bảng hiển thị thông tin chi tiết đơn hàng -->
+                    <table class="table table-bordered">
+                        <tbody>
+                        <!--                                    <tr>-->
+                        <!--                                        <td>Thông tin đơn hàng:</td>-->
+                        <!--                                        <td><span th:text="${orderId}">[order ID]</span></td>-->
+                        <!--                                    </tr>-->
+                        <tr>
+                            <td>Tổng tiền:</td>
+                            <td><span
+                                    th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')+' VND'}">[total price]</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thời gian thanh toán:</td>
+                            <td><span th:text="${paymentTime}">[payment time]</span></td>
+                        </tr>
+                        <tr>
+                            <td>Mã giao dịch:</td>
+                            <td><span th:text="${transactionId}">[transaction ID]</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-center"> <!-- Added container for button centering -->
+                        <a href="/" class="btn btn-dark">Về trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end body -->
+
+
+<!-- start footer -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

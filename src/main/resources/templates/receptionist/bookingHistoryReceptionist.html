@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lễ tân</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="...">
+
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/manager.css"/>
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/manager.js"></script>
+    <link rel="stylesheet" href="/assets/css/header-footer.css">
+    <link rel="stylesheet" href="/assets/css/header_footer_style.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
+    <script src="/assets/js/toast.js"></script>
+    <!-- Include Bootstrap-datepicker CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <!-- Include Bootstrap-datepicker JS -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Include Bootstrap-datepicker localization for Vietnamese -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
+
+    <style>
+        /* Override Bootstrap styles for the active class */
+        .list-unstyled li.active {
+            background-color: #007bff !important;
+            color: #ffffff !important;
+            /* Add any other styles as needed */
+        }
+
+    </style>
+</head>
+
+<body>
+
+<body data-bs-target=".navbar" data-bs-offset="100"></body>
+<div id="toast"></div>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header border-bottom">
+            <img src="/assets/img/Orilogo.png" class="img-fluid">
+        </div>
+
+        <ul class="list-unstyled components border-bottom">
+            <p class="border-bottom fw-bold"><i class="bi bi-person-badge-fill pe-2"></i>Lễ tân</p>
+            <li th:class="${activePage == '/receptionist/createRoomReceptionist' ? 'active' : ''}">
+                <a th:href="@{/receptionist/createRoomReceptionist}"><i class="fa-solid fa-check-double pe-2"></i>Đặt
+                    phòng</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listRoomInUse' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listRoomInUse}"><i class="fa-solid fa-house-user pe-2"></i>Phòng đang sử
+                    dụng</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listBookingReceptionist' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listBookingReceptionist}"><i class="fa-solid fa-bell pe-2"></i>Đặt trước</a>
+            </li>
+            <li th:class="${activePage == '/receptionist/listHistoryBooking' ? 'active' : ''}">
+                <a th:href="@{/receptionist/listHistoryBooking}"><i class="fa-solid fa-clipboard pe-2"></i>Lịch sử đặt
+                    phòng</a>
+            </li>
+        </ul>
+
+
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg shadow ">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+
+                <button id="userButton" class="btn bi-person-circle" style="font-size: 2em;"></button>
+                <div id="userMenu" class="user-menu">
+                    <ul style="list-style-type: none;">
+                        <li><a th:href="@{/viewProfile}">Hồ sơ</a></li>
+                        <li><a th:href="@{/changepass}">Đổi mật khẩu</a></li>
+                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="table-responsive">
+            <h3 class="fw-bold"> Lịch sử đặt phòng</h3>
+
+            <form method="get" th:action="@{/receptionist/listHistoryBooking}" onsubmit="return validateForm()">
+                <div class="navSearch row justify-content-center mb-3">
+                    <div class="col-lg-3">
+                        <p>Ngày nhận phòng:
+                            <input type="date" name="checkIn" class="form-control" placeholder="Date"
+                                   id="checkInDate" th:value="${checkInDate}" style="margin-top: -3px">
+                        </p>
+
+
+                    </div>
+                    <div class="col-lg-3">
+                        <p>Ngày trả phòng:
+                            <input type="date" name="checkOut" class="form-control" placeholder="Date"
+                                   id="checkOutDate" th:value="${checkOutDate}" style="margin-top: -3px">
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <p>Trạng thái: <select class="form-select" name="status">
+                            <option selected value=""></option>
+                            <option th:selected="${status == 1}" value="1">Chưa check-in</option>
+                            <option th:selected="${status == 2}" value="2">Đã check-in</option>
+                            <option th:selected="${status == 3}" value="3">Đã check-out</option>
+                            <option th:selected="${status == 4}" value="4">Đã huỷ</option>
+                        </select></p>
+                    </div>
+                    <div class="col mt-4">
+                        <button type="submit" class="btn btn-dark" style="font-size: 1.2em;">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped table-hover border align-baseline shadow">
+                <thead class="table-dark" id="thead">
+                <tr class="table-dark">
+                    <th>STT</th>
+                    <th>Tên khách hàng</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày nhận phòng</th>
+                    <th>Ngày trả phòng</th>
+                    <th>Tổng giá</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hotelbooking, iterStat : ${bookings}">
+                    <td th:text="${iterStat.count + (currentPage * pageSize)}"></td>
+                    <th:block th:if="${hotelbooking.getUser() == null }">
+                        <td th:text="${hotelbooking.getHotelBooking().getName()}"></td>
+                        <td th:text="${hotelbooking.getHotelBooking().getEmail()}"></td>
+                        <td th:text="${hotelbooking.getHotelBooking().getAddress()}"></td>
+                        <td th:text="${hotelbooking.getHotelBooking().getPhone()}"></td>
+                    </th:block>
+                    <th:block th:if="${hotelbooking.getUser() != null }">
+                        <td th:text="${hotelbooking.getUser().getName()}"></td>
+                        <td th:text="${hotelbooking.getUser().getEmail()}"></td>
+                        <td th:text="${hotelbooking.getUser().getAddress()}"></td>
+                        <td th:text="${hotelbooking.getUser().getPhone()}"></td>
+                    </th:block>
+
+                    <td th:text="${#dates.format(hotelbooking.getHotelBooking().getCheckIn(), 'dd-MM-yyyy')}">
+                    </td>
+                    <td th:text="${#dates.format(hotelbooking.getHotelBooking().getCheckOut(), 'dd-MM-yyyy')}">
+                    </td>
+
+                    <td
+                            th:text="${#numbers.formatDecimal(hotelbooking.getHotelBooking().getTotalPrice(), 0, 'COMMA', 0, 'POINT')}">
+                    </td>
+
+                    <td>
+                        <span th:if="${hotelbooking.getHotelBooking().getStatusId() == 1}">Chưa check-in</span>
+                        <span th:if="${hotelbooking.getHotelBooking().getStatusId() == 2}">Đang sử dụng</span>
+                        <span th:if="${hotelbooking.getHotelBooking().getStatusId() == 3}">Đã check-out</span>
+                        <span th:if="${hotelbooking.getHotelBooking().getStatusId() == 4}">Đã huỷ</span>
+                    </td>
+                    <th:block th:if="${hotelbooking.getHotelBooking().getStatusId() == 1}">
+                        <td>
+                            <button class="btn btn-dark"><a
+                                    th:href="@{'/receptionist/bookingDetails/' + ${hotelbooking.getHotelBooking().getHotelBookingId()} }">
+                                Chi
+                                tiết</a></button>
+                            <button class="btn btn-dark"><a
+                                    th:href="@{'/receptionist/cancelBooking/' + ${hotelbooking.getHotelBooking().getHotelBookingId()}}">Huỷ
+                                đặt
+                            </a>
+                            </button>
+
+                        </td>
+                    </th:block>
+                    <th:block th:if="${hotelbooking.getHotelBooking().getStatusId() != 1}">
+                        <td>
+                            <button class="btn btn-dark"><a
+                                    th:href="@{'/receptionist/bookingDetails/' + ${hotelbooking.getHotelBooking().getHotelBookingId()} }">
+                                Chi
+                                tiết</a></button>
+                        </td>
+                    </th:block>
+
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${error != null and error != ''}" class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <nav class="mt-3" th:if="${totalPages > 1}" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a class="page-link"
+                       th:href="@{/receptionist/listHistoryBooking(page=0, checkIn=${checkInDate},checkOut=${checkOutDate}, status=${status})}">&laquo;&laquo;</a>
+                </li>
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a class="page-link"
+                       th:href="@{/receptionist/listHistoryBooking(page=${currentPage - 1}, checkIn=${checkInDate},checkOut=${checkOutDate}, status=${status})}">&laquo;</a>
+                </li>
+
+                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:class="${pageNumber == currentPage} ? 'page-item active' : 'page-item'">
+                    <a class="page-link"
+                       th:href="@{/receptionist/listHistoryBooking(page=${pageNumber}, checkIn=${checkInDate}, checkOut=${checkOutDate},status=${status})}"
+                       th:text="${pageNumber + 1}"></a>
+                </li>
+
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link"
+                       th:href="@{/receptionist/listHistoryBooking(page=${currentPage + 1}, checkIn=${checkInDate},checkOut=${checkOutDate}, status=${status})}">&raquo;</a>
+                </li>
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link"
+                       th:href="@{/receptionist/listHistoryBooking(page=${totalPages - 1}, checkIn=${checkInDate}, checkOut=${checkOutDate},status=${status})}">&raquo;&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var checkInDate = document.getElementById('checkInDate').value;
+        var checkOutDate = document.getElementById('checkOutDate').value;
+
+        if (checkInDate.trim() !== "") {
+
+            var dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+
+
+            if (!dateFormat.test(checkInDate)) {
+                showErrorToast('Vui lòng nhập đúng định dạng dd-MM-yyyy cho ngày nhận phòng');
+                return false;
+            }
+
+            if (new Date(checkOutDate) < new Date(checkInDate)) {
+                showErrorToast("Ngày nhận phòng phải nhỏ hơn ngày trả phòng.");
+                return false;
+            }
+        }
+        if (checkOutDate.trim() !== "") {
+            var dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+
+            if (!dateFormat.test(checkOutDate)) {
+                showErrorToast("Vui lòng nhập đúng định dạng dd-MM-yyyy cho ngày trả phòng.");
+                return false;
+            }
+
+            // Check if checkOutDate is greater than checkInDate
+            if (new Date(checkOutDate) < new Date(checkInDate)) {
+                showErrorToast("Ngày trả phòng phải lớn hơn ngày nhận phòng.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    function showErrorToast(message) {
+        var errorToastData = {
+            title: "Lỗi!",
+            message: message,
+            type: "error",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            errorToastData.title,
+            errorToastData.message,
+            errorToastData.type,
+            errorToastData.duration
+        );
+    }
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = /*[[${error1}]]*/ '';
+
+    if (errorMessage !== null && errorMessage.trim() !== '') {
+        var errorToastData = {
+            title: "Lỗi!",
+            message: errorMessage,
+            type: "error",
+            duration: 5000,
+        };
+        toastNotificationCountdown(
+            errorToastData.title,
+            errorToastData.message,
+            errorToastData.type,
+            errorToastData.duration
+        );
+    }
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

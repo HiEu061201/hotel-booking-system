@@ -1,0 +1,82 @@
+.btn {
+    background-color: #caa169;
+    border: #caa169;
+}
+body {
+    font-size: 14px; /* Điều chỉnh kích thước font chữ theo ý muốn */
+  }
+  
+  /* Thu nhỏ kích thước của phần tử container */
+
+  
+  /* Thu nhỏ h4 */
+  h4 {
+    font-size: 16px; /* Điều chỉnh kích thước của tiêu đề h4 */
+  }
+  
+  /* Thu nhỏ kích thước của button */
+  .btn {
+    font-size: 14px;
+    padding: 5px 10px; /* Điều chỉnh padding để làm cho nút nhỏ hơn */
+  }
+  
+  /* Thu nhỏ các lựa chọn select */
+  select {
+    font-size: 14px;
+  }
+  
+  /* Thu nhỏ biểu tượng */
+  .bi {
+    font-size: 14px;
+  }
+  
+  /* Thu nhỏ độ rộng của phần tử popup */
+  .popup-content {
+    max-width: 400px; /* Điều chỉnh độ rộng theo ý muốn */
+  }
+  
+  /* Thu nhỏ font chữ của phần tử form */
+  
+  /* Thu nhỏ kích thước checkbox */
+  .form-check-input {
+    transform: scale(0.8); /* Điều chỉnh kích thước checkbox theo ý muốn */
+  }
+  
+  .copy-btn{
+    padding: 0;
+        border: none;
+        background: none;
+  }
+  
+
+.user-menu {
+    display: none;
+    position: absolute;
+    top: 80%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px 0;
+}
+
+.user-menu.show {
+    display: block;
+}
+
+.red-asterisk {
+    color: red;
+}
+#servicePopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    z-index: 1000; /* Đảm bảo popup nằm trên overlay */
+}
