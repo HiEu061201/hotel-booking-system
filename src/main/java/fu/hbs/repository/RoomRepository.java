@@ -127,4 +127,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     void updateRoomByStatusId(int status, Long roomId);
 
     Room findByRoomImageId(Long imageId);
+
+    Room findAllByRoomIdIsAndAndDescription(Long roomId, String description);
 }
